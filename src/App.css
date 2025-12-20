@@ -1,121 +1,169 @@
 /* src/App.css */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
 
-/* Reset básico dentro del widget */
-#root {
-  /* ESTO ES LO QUE LO HACE FLOTAR ABAJO A LA DERECHA */
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99999; /* Por encima de todo */
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* El contenedor principal ahora es pequeño */
-.widget-container {
-  width: 350px;
-  height: 500px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 5px 40px rgba(0,0,0,0.2);
+/* === LOGIN === */
+.login-container {
+  height: 100vh;
+  width: 100vw;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid #e0e0e0;
-  /* Animación de entrada */
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* --- LOGIN (Adaptado a widget) --- */
-.login-view {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-color: #f0f2f5;
 }
-
-.login-icon { font-size: 3rem; margin-bottom: 10px; }
-.login-title { font-size: 1.2rem; margin-bottom: 20px; color: #333; }
-
-.form-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 350px;
 }
-
-.primary-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
+.brand-logo { font-size: 50px; margin-bottom: 10px; }
+.login-input {
+  width: 100%; padding: 12px; margin: 10px 0;
+  border: 1px solid #ddd; border-radius: 8px;
+  font-size: 16px;
 }
-.primary-btn:hover { background-color: #005bb5; }
-.primary-btn:disabled { background-color: #ccc; }
-
-.error-msg {
-  font-size: 0.8rem;
-  color: red;
+.login-btn {
+  width: 100%; padding: 12px; background: #0088cc; /* Telegram Blue */
+  color: white; border: none; border-radius: 8px;
+  font-size: 16px; font-weight: bold; cursor: pointer;
   margin-top: 10px;
 }
+.login-btn:hover { background: #0077b5; }
+.error-text { color: red; font-size: 14px; margin-top: 10px; }
 
-/* --- CHAT (Adaptado a widget) --- */
+/* === CHAT LAYOUT (TELEGRAM STYLE) === */
+.telegram-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Sidebar (Izquierda) */
+.sidebar {
+  width: 300px;
+  background: white;
+  border-right: 1px solid #dfe1e5;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-header {
+  padding: 15px; font-weight: bold; color: #333; border-bottom: 1px solid #f0f0f0;
+}
+.contact-item {
+  display: flex; align-items: center; padding: 10px 15px;
+  cursor: pointer;
+}
+.contact-item.active { background-color: #0088cc; color: white; }
+.avatar { font-size: 24px; margin-right: 10px; }
+.contact-info .name { font-weight: 600; font-size: 15px; }
+.contact-info .last-msg { font-size: 13px; opacity: 0.8; }
+
+/* Chat Main (Derecha) */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
 .chat-header {
-  padding: 15px;
-  background: #0070f3;
-  color: white;
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #dfe1e5;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
 }
-.chat-header h3 { margin: 0; font-size: 1rem; }
-.logout-btn {
-  background: rgba(255,255,255,0.2);
-  border: none;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
+.chat-info h3 { font-size: 16px; margin: 0; }
+.chat-info span { font-size: 13px; color: #999; }
+.logout-icon-btn {
+  background: none; border: none; font-size: 20px; cursor: pointer; color: #666;
 }
 
-.messages-area {
+/* Fondo del chat con patrón */
+.chat-background {
   flex: 1;
-  padding: 15px;
+  background-color: #8e9fae; /* Fondo estilo Telegram */
+  background-image: url("https://web.telegram.org/img/bg_0.png"); /* Patrón opcional */
+  background-size: cover;
   overflow-y: auto;
-  background: #f9f9f9;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
-.message-bubble {
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  max-width: 85%;
-  word-wrap: break-word;
-}
-.user-msg { align-self: flex-end; background: #0070f3; color: white; border-bottom-right-radius: 2px; }
-.ai-msg { align-self: flex-start; background: white; border: 1px solid #ddd; color: #333; border-top-left-radius: 2px; }
-
-.input-area {
-  padding: 10px;
-  border-top: 1px solid #eee;
+.messages-list {
+  padding: 20px;
   display: flex;
-  gap: 5px;
-  background: white;
+  flex-direction: column;
+  gap: 8px;
+  min-height: min-content;
 }
-.chat-input { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 20px; outline: none; }
+
+.msg-row { display: flex; width: 100%; }
+.msg-row.user { justify-content: flex-end; }
+.msg-row.ai { justify-content: flex-start; }
+
+.msg-bubble {
+  max-width: 60%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  position: relative;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Estilos de burbuja específicos */
+.msg-row.user .msg-bubble {
+  background: #effdde; /* Verde claro Telegram */
+  color: black;
+  border-bottom-right-radius: 2px;
+}
+.msg-row.ai .msg-bubble {
+  background: white;
+  color: black;
+  border-bottom-left-radius: 2px;
+}
+
+.msg-time {
+  font-size: 11px;
+  color: #999;
+  text-align: right;
+  margin-top: 4px;
+}
+.msg-row.user .msg-time { color: #5fb39e; } /* Ajuste para fondo verde */
+
+.input-bar {
+  background: white;
+  padding: 10px 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.input-bar input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+}
+.input-bar button {
+  background: none; border: none; font-size: 24px; color: #0088cc; cursor: pointer;
+}
+.input-bar button:hover { color: #0077b5; }
+.input-bar button:disabled { color: #ccc; }
+
+.empty-state {
+  text-align: center; margin-top: 50px;
+  background: rgba(0,0,0,0.3); padding: 10px; border-radius: 20px;
+  color: white; align-self: center; display: inline-block;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 700px) {
+  .sidebar { display: none; } /* Ocultar sidebar en móviles */
+}

@@ -1,37 +1,35 @@
+// api/chat.js
 export default async function handler(req, res) {
-    // 1. CORS UNIVERSAL (Vital para que el widget funcione en CUALQUIER web)
+    // Headers CORS (Déjalos igual)
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', ''); // Permite que se use desde cualquier dominio
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token'); // Agregamos X-Auth-Token
 
-    // Manejo de "Preflight" (el navegador pregunta antes de enviar)
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    // Solo aceptamos POST
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
+    if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     try {
         const { texto, session_id } = req.body;
+        // Obtenemos el token que envía el Frontend
+        const userToken = req.headers['x-auth-token'];
 
-        // URL DIRECTA a tu Space Privado (termina en .hf.space)
+        // ⚠️ TU URL DE HUGGING FACE
         const HF_URL = "https://fulkito-aurmina-ai-agent.hf.space/chat";
 
         const response = await fetch(HF_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                // Aquí el servidor inyecta el token seguro
-                "Authorization": `Bearer ${process.env.HF_TOKEN}`
+                // Pasamos el token del usuario al backend para que valide el acceso
+                "X-Auth-Token": userToken
             },
             body: JSON.stringify({ texto, session_id })
         });
 
         if (!response.ok) {
+            // Si el backend dice 403 Forbidden, se lo pasamos al frontend
+            if (response.status === 403) return res.status(403).json({ error: "Token inválido" });
             throw new Error(`Error HF: ${response.status}`);
         }
 
