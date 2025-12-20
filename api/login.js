@@ -17,8 +17,8 @@ export default async function handler(req, res) {
     try {
         // --- 2. URL DE HUGGING FACE ---
         // IMPORTANTE: Sin barra al final, porque en main.py es @app.post("/login")
-        const HF_DOMAIN = "https://fulkito-aurmina-ai-agent.hf.space";
-        const TARGET_URL = `${HF_DOMAIN}/login`;
+
+        const TARGET_URL = "https://fulkito-aurmina-ai-agent.hf.space/login";
 
         console.log(`🚀 Conectando a: ${TARGET_URL}`);
 
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
         const timeoutId = setTimeout(() => controller.abort(), 8000);
 
         const response = await fetch(TARGET_URL, {
-            method: "POST",
+            method: "POST", // <--- Asegúrate que esto esté explícito
             headers: {
                 "Content-Type": "application/json"
             },
