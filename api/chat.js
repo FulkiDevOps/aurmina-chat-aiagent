@@ -1,4 +1,3 @@
-// api/chat.js
 export default async function handler(req, res) {
     // Headers CORS (Déjalos igual)
     res.setHeader('Access-Control-Allow-Credentials', true);

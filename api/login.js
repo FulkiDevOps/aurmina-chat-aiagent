@@ -1,54 +1,64 @@
 
 export default async function handler(req, res) {
-    // 1. CORS (Para que no te bloquee)
+    // 1. Manejo de CORS (Vital)
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
 
-    if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
+    // Responder al "ping" del navegador
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method Not Allowed' });
+    }
 
     try {
-        console.log("🔵 Iniciando intento de login desde Vercel...");
+        // --- CONFIGURACIÓN ---
+        const HF_DOMAIN = "https://fulkito-aurmina-ai-agent.hf.space";
+        const TARGET_URL = `${HF_DOMAIN}/login`;
 
-        // 👇 IMPORTANTE: CAMBIA ESTO POR TU URL REAL DE HUGGING FACE
-        // Debe terminar en .hf.space (sin /login al final, eso lo agrego abajo)
-        const HF_BASE_URL = "https://fulkito-aurmina-ai-agent.hf.space";
-        const TARGET_URL = `${HF_BASE_URL}/login`;
-
-        console.log(`📡 Conectando a: ${TARGET_URL}`);
+        console.log(`🚀 Intentando conectar a: ${TARGET_URL}`);
+        console.log("📦 Datos enviados:", JSON.stringify(req.body));
 
         const response = await fetch(TARGET_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(req.body)
         });
 
-        console.log(`📥 Respuesta recibida. Status: ${response.status}`);
+        console.log(`📥 Estado de respuesta HF: ${response.status}`);
 
-        // Verificamos que la respuesta sea JSON antes de intentar leerla
+        // Verificamos si la respuesta es JSON
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
-            const textBody = await response.text();
-            console.error("❌ Error: Hugging Face no devolvió JSON:", textBody);
-            throw new Error(`Hugging Face devolvió algo que no es JSON (Posiblemente un error HTML 404 o 500). Status: ${response.status}`);
+            const text = await response.text();
+            console.error("❌ Error: Hugging Face devolvió HTML o Texto en vez de JSON:", text);
+            throw new Error(`HF devolvió formato incorrecto (${response.status}). Posiblemente el servidor está apagado o la URL está mal.`);
         }
 
         const data = await response.json();
 
+        // Si Hugging Face dice que la contraseña está mal (401), lo pasamos al front
         if (!response.ok) {
-            console.warn("⚠️ Login rechazado por el backend:", data);
             return res.status(response.status).json(data);
         }
 
-        console.log("✅ Login exitoso.");
+        // Éxito total
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error("🔥 ERROR CRÍTICO EN VERCEL FUNCTION:", error);
+        console.error("🔥 ERROR CRÍTICO EN VERCEL:", error);
         return res.status(500).json({
-            error: "Error interno del proxy Vercel",
+            error: "Error interno del servidor Vercel",
             details: error.message
         });
     }

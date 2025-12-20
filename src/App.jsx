@@ -7,6 +7,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
     const [pass, setPass] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const LOGO_URL = "/Aurmina bubble chat.png";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,11 +37,15 @@ const LoginScreen = ({ onLoginSuccess }) => {
     return (
         <div className="login-container">
             <div className="login-card">
-                <div className="brand-logo">🛡️</div>
-                <h2>Aurmina Agent</h2>
-                <p>Acceso Seguro a Protocolos</p>
+                {/* La imagen cargará desde la carpeta public */}
+                <img src={LOGO_URL} alt="Logo Aurmina" className="brand-logo-img" />
+
+                {/* Estos textos ahora tendrán estilos oscuros gracias al CSS de abajo */}
+                <h2 className="login-title">Aurmina Agent</h2>
+                <p className="login-subtitle">Acceso Seguro a Protocolos</p>
 
                 <form onSubmit={handleSubmit}>
+                    {/* ... inputs y botón ... */}
                     <input
                         className="login-input"
                         placeholder="Usuario"

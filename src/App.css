@@ -14,21 +14,65 @@
   background: white;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   text-align: center;
   width: 350px;
+  display: flex;       /* Asegura que los elementos se apilen bien */
+  flex-direction: column;
+  align-items: center;
 }
+
+/* NUEVO: Clase para la imagen del logo */
+/* --- ESTILO PARA TU LOGO LOCAL --- */
+.brand-logo-img {
+  width: 100px;        /* Ajusta este tamaño según tu gusto */
+  height: auto;        /* Mantiene la proporción para no deformar */
+  object-fit: contain;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* --- ARREGLO DE TEXTOS (Para que se lean) --- */
+.login-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a !important; /* Negro suave (se verá sobre blanco) */
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #666666 !important; /* Gris oscuro */
+  margin-bottom: 30px;
+}
+
 .brand-logo { font-size: 50px; margin-bottom: 10px; }
 .login-input {
-  width: 100%; padding: 12px; margin: 10px 0;
-  border: 1px solid #ddd; border-radius: 8px;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   font-size: 16px;
+  color: #333; /* Texto que escribes también oscuro */
 }
+
 .login-btn {
-  width: 100%; padding: 12px; background: #0088cc; /* Telegram Blue */
-  color: white; border: none; border-radius: 8px;
-  font-size: 16px; font-weight: bold; cursor: pointer;
-  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  background: #0088cc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.login-btn:disabled {
+  background-color: #ccc;
 }
 .login-btn:hover { background: #0077b5; }
 .error-text { color: red; font-size: 14px; margin-top: 10px; }
