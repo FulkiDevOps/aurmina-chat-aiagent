@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const TARGET_URL = `${HF_DOMAIN}/login`; // Sin barra al final
 
         // ⚠️ AQUÍ ESTÁ LA CLAVE: Leer el token de las variables de Vercel
-        const HF_TOKEN = process.env.HF_ACCESS_TOKEN;
+        const HF_TOKEN = process.env.HF_TOKEN;
 
         if (!HF_TOKEN) {
             console.error("❌ ERROR: No se encontró la variable HF_ACCESS_TOKEN en Vercel");

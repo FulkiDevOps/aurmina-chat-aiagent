@@ -15,6 +15,7 @@ export default async function handler(req, res) {
 
         // ⚠️ TU URL DE HUGGING FACE
         const HF_URL = "https://fulkito-aurmina-ai-agent.hf.space/chat";
+        const HF_TOKEN = process.env.HF_TOKEN;
 
         const response = await fetch(HF_URL, {
             method: "POST",
