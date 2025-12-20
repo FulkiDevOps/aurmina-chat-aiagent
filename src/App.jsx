@@ -48,14 +48,14 @@ const LoginScreen = ({ onLoginSuccess }) => {
                     {/* ... inputs y botón ... */}
                     <input
                         className="login-input"
-                        placeholder="Usuario"
+                        placeholder="User"
                         value={user}
                         onChange={e => setUser(e.target.value)}
                     />
                     <input
                         className="login-input"
                         type="password"
-                        placeholder="Contraseña"
+                        placeholder="Password"
                         value={pass}
                         onChange={e => setPass(e.target.value)}
                     />

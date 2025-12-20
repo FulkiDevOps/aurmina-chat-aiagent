@@ -22,7 +22,8 @@ export default async function handler(req, res) {
             headers: {
                 "Content-Type": "application/json",
                 // Pasamos el token del usuario al backend para que valide el acceso
-                "X-Auth-Token": userToken
+                "X-Auth-Token": userToken,
+                "Authorization": `Bearer ${HF_TOKEN}`
             },
             body: JSON.stringify({ texto, session_id })
         });

@@ -1,118 +1,48 @@
 /* src/App.css */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
 
-/* === LOGIN === */
+/* === LOGIN (Sin cambios, se mantiene igual) === */
 .login-container {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #333333;
+  height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; background-color: #333333;
 }
 .login-card {
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  text-align: center;
-  width: 350px;
-  display: flex;       /* Asegura que los elementos se apilen bien */
-  flex-direction: column;
-  align-items: center;
+  background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  text-align: center; width: 350px; display: flex; flex-direction: column; align-items: center;
 }
-
-/* NUEVO: Clase para la imagen del logo */
-/* --- ESTILO PARA TU LOGO LOCAL --- */
-.brand-logo-img {
-  width: 100px;        /* Ajusta este tamaño según tu gusto */
-  height: auto;        /* Mantiene la proporción para no deformar */
-  object-fit: contain;
-  margin-bottom: 20px;
-  display: block;
-}
-
-/* --- ARREGLO DE TEXTOS (Para que se lean) --- */
-.login-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a1a1a !important; /* Negro suave (se verá sobre blanco) */
-  margin-bottom: 8px;
-  margin-top: 0;
-}
-
-.login-subtitle {
-  font-size: 14px;
-  color: #666666 !important; /* Gris oscuro */
-  margin-bottom: 30px;
-}
-
-.brand-logo { font-size: 50px; margin-bottom: 10px; }
-.login-input {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  color: #ffffff; /* Texto que escribes también oscuro */
-}
-
-.login-btn {
-  width: 100%;
-  padding: 12px;
-  background: #0088cc;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
-}
-
-.login-btn:disabled {
-  background-color: #ccc;
-}
+.brand-logo-img { width: 100px; height: auto; object-fit: contain; margin-bottom: 20px; display: block; }
+.login-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; margin-top: 0; }
+.login-subtitle { font-size: 14px; color: #666666; margin-bottom: 30px; }
+.login-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; color: #333; }
+.login-btn { width: 100%; padding: 12px; background: #0088cc; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
 .login-btn:hover { background: #0077b5; }
+.login-btn:disabled { background-color: #ccc; }
 .error-text { color: red; font-size: 14px; margin-top: 10px; }
 
-/* === CHAT LAYOUT (TELEGRAM STYLE) === */
+
+/* === NUEVO CHAT LAYOUT CENTRADO (988px) === */
+
 .telegram-layout {
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  justify-content: center; /* Centra el chat horizontalmente */
+  background-color: #212121; /* Fondo oscuro exterior (fuera del chat) */
 }
 
-/* Sidebar (Izquierda) */
-.sidebar {
-  width: 300px;
-  background: white;
-  border-right: 1px solid #dfe1e5;
-  display: flex;
-  flex-direction: column;
-}
-.sidebar-header {
-  padding: 15px; font-weight: bold; color: #333; border-bottom: 1px solid #f0f0f0;
-}
-.contact-item {
-  display: flex; align-items: center; padding: 10px 15px;
-  cursor: pointer;
-}
-.contact-item.active { background-color: #0088cc; color: white; }
-.avatar { font-size: 24px; margin-right: 10px; }
-.contact-info .name { font-weight: 600; font-size: 15px; }
-.contact-info .last-msg { font-size: 13px; opacity: 0.8; }
+/* Ocultamos la sidebar antigua */
+.sidebar { display: none; }
 
-/* Chat Main (Derecha) */
+/* Contenedor Principal del Chat */
 .chat-main {
-  flex: 1;
+  width: 988px;           /* Ancho fijo solicitado */
+  max-width: 100%;        /* Para que no rompa en móviles */
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: white; /* Color base */
+  box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Sombra elegante a los lados */
 }
-
 
 .chat-header {
   height: 60px;
@@ -123,17 +53,16 @@
   align-items: center;
   padding: 0 20px;
 }
+
 .chat-info h3 { font-size: 16px; margin: 0; }
 .chat-info span { font-size: 13px; color: #999; }
-.logout-icon-btn {
-  background: none; border: none; font-size: 20px; cursor: pointer; color: #666;
-}
+.logout-icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
 
-/* Fondo del chat con patrón */
+/* Fondo del chat (mismos colores telegram) */
 .chat-background {
   flex: 1;
-  background-color: #8e9fae; /* Fondo estilo Telegram */
-  background-image: url("https://web.telegram.org/img/bg_0.png"); /* Patrón opcional */
+  background-color: #8e9fae;
+  background-image: url("https://web.telegram.org/img/bg_0.png");
   background-size: cover;
   overflow-y: auto;
   display: flex;
@@ -153,41 +82,31 @@
 .msg-row.ai { justify-content: flex-start; }
 
 .msg-bubble {
-  max-width: 60%;
-  padding: 8px 12px;
+  max-width: 75%; /* Un poco más ancho ya que tenemos más espacio */
+  padding: 10px 14px;
   border-radius: 12px;
   position: relative;
   font-size: 15px;
-  line-height: 1.4;
+  line-height: 1.5;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  word-wrap: break-word;
 }
 
-/* Estilos de burbuja específicos */
-.msg-row.user .msg-bubble {
-  background: #effdde; /* Verde claro Telegram */
-  color: black;
-  border-bottom-right-radius: 2px;
-}
-.msg-row.ai .msg-bubble {
-  background: white;
-  color: black;
-  border-bottom-left-radius: 2px;
-}
+/* Colores de burbuja (Intactos) */
+.msg-row.user .msg-bubble { background: #effdde; color: black; border-bottom-right-radius: 2px; }
+.msg-row.ai .msg-bubble { background: white; color: black; border-bottom-left-radius: 2px; }
 
-.msg-time {
-  font-size: 11px;
-  color: #999;
-  text-align: right;
-  margin-top: 4px;
-}
-.msg-row.user .msg-time { color: #5fb39e; } /* Ajuste para fondo verde */
+.msg-time { font-size: 11px; color: #999; text-align: right; margin-top: 4px; display: block;}
+.msg-row.user .msg-time { color: #5fb39e; }
 
+/* Barra de input */
 .input-bar {
   background: white;
-  padding: 10px 20px;
+  padding: 15px 20px;
   display: flex;
   gap: 15px;
   align-items: center;
+  border-top: 1px solid #ddd;
 }
 .input-bar input {
   flex: 1;
@@ -196,19 +115,12 @@
   font-size: 16px;
   outline: none;
 }
-.input-bar button {
-  background: none; border: none; font-size: 24px; color: #0088cc; cursor: pointer;
-}
+.input-bar button { background: none; border: none; font-size: 24px; color: #0088cc; cursor: pointer; }
 .input-bar button:hover { color: #0077b5; }
 .input-bar button:disabled { color: #ccc; }
 
 .empty-state {
   text-align: center; margin-top: 50px;
-  background: rgba(0,0,0,0.3); padding: 10px; border-radius: 20px;
+  background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 20px;
   color: white; align-self: center; display: inline-block;
-}
-
-/* Responsivo para móviles */
-@media (max-width: 700px) {
-  .sidebar { display: none; } /* Ocultar sidebar en móviles */
 }
