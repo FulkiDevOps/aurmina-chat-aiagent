@@ -137,7 +137,7 @@ const AurminaChat = ({ token, onLogout }) => {
                 <header className="chat-header">
                     <div className="chat-info">
                         <h3>Aurmina Agent</h3>
-                        <span>bot • on línea</spa
+                        <span>bot • on línea</span>
                     </div>
                     <button onClick={onLogout} className="logout-icon-btn">⎋</button>
                 </header>
