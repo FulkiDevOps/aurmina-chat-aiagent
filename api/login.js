@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
     try {
         // Tu URL de Hugging Face (donde está el main.py)
-        const HF_URL = "https://fulkito-aurmina-ai-agent.hf.space/login"; // ⚠️ AJUSTA TU URL
+        const HF_URL = "https://fulkito-aurmina-ai-agent.hf.space/login";
 
         const response = await fetch(HF_URL, {
             method: "POST",
