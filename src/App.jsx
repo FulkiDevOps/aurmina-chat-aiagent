@@ -126,8 +126,8 @@ const AurminaChat = ({ token, onLogout }) => {
                 <div className="contact-item active">
                     <div className="avatar">🤖</div>
                     <div className="contact-info">
-                        <div className="name">Agente Quirúrgico</div>
-                        <div className="last-msg">En línea</div>
+                        <div className="name">Aurmina AI Agent</div>
+                        <div className="last-msg">On line</div>
                     </div>
                 </div>
             </div>
@@ -136,8 +136,8 @@ const AurminaChat = ({ token, onLogout }) => {
             <div className="chat-main">
                 <header className="chat-header">
                     <div className="chat-info">
-                        <h3>Agente Quirúrgico</h3>
-                        <span>bot • en línea</span>
+                        <h3>Aurmina Agent</h3>
+                        <span>bot • on línea</spa
                     </div>
                     <button onClick={onLogout} className="logout-icon-btn">⎋</button>
                 </header>
@@ -146,7 +146,7 @@ const AurminaChat = ({ token, onLogout }) => {
                     <div className="messages-list">
                         {messages.length === 0 && (
                             <div className="empty-state">
-                                <span>👋 Hola, soy tu asistente. Consulta sobre protocolos, envíos o productos.</span>
+                                <span>👋🏻 Hi, I'm the Aurmina AI Agent. You can inquirie about our product, shipping, or any other question you might have. </span>
                             </div>
                         )}
                         {messages.map((m, i) => (
