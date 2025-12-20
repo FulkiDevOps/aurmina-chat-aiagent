@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
     // 1. CORS UNIVERSAL (Vital para que el widget funcione en CUALQUIER web)
     res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Permite que se use desde cualquier dominio
+    res.setHeader('Access-Control-Allow-Origin', ''); // Permite que se use desde cualquier dominio
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -19,8 +19,7 @@ export default async function handler(req, res) {
         const { texto, session_id } = req.body;
 
         // URL DIRECTA a tu Space Privado (termina en .hf.space)
-        // Ejemplo: https://fulkito-protego-api.hf.space/chat
-        const HF_URL = "https://fulkito-protego-api.hf.space/chat";
+        const HF_URL = "https://fulkito-aurmina-ai-agent.hf.space/chat";
 
         const response = await fetch(HF_URL, {
             method: "POST",
