@@ -42,7 +42,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
                 {/* Estos textos ahora tendrán estilos oscuros gracias al CSS de abajo */}
                 <h2 className="login-title">Aurmina Agent</h2>
-                <p className="login-subtitle">Acceso Seguro a Protocolos</p>
+                <p className="login-subtitle">Acceso to chat with the Aurmina Agent</p>
 
                 <form onSubmit={handleSubmit}>
                     {/* ... inputs y botón ... */}

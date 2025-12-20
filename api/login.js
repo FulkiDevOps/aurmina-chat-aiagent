@@ -1,64 +1,74 @@
-
 export default async function handler(req, res) {
-    // 1. Manejo de CORS (Vital)
+    // --- 1. CONFIGURACIÓN CORS ---
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    );
+    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    // Responder al "ping" del navegador
+    // Manejo de Preflight (OPTIONS)
     if (req.method === 'OPTIONS') {
-        res.status(200).end();
-        return;
+        return res.status(200).end();
     }
 
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
+        return res.status(405).json({ error: 'Solo se permite POST' });
     }
 
     try {
-        // --- CONFIGURACIÓN ---
+        // --- 2. URL DE HUGGING FACE ---
+        // IMPORTANTE: Sin barra al final, porque en main.py es @app.post("/login")
         const HF_DOMAIN = "https://fulkito-aurmina-ai-agent.hf.space";
         const TARGET_URL = `${HF_DOMAIN}/login`;
 
-        console.log(`🚀 Intentando conectar a: ${TARGET_URL}`);
-        console.log("📦 Datos enviados:", JSON.stringify(req.body));
+        console.log(`🚀 Conectando a: ${TARGET_URL}`);
+
+        // --- 3. TIMEOUT DE PROTECCIÓN (8 seg) ---
+        // Vercel corta a los 10s. Cortamos antes para avisar al usuario.
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
 
         const response = await fetch(TARGET_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(req.body)
+            body: JSON.stringify(req.body),
+            signal: controller.signal
         });
 
-        console.log(`📥 Estado de respuesta HF: ${response.status}`);
+        clearTimeout(timeoutId);
 
-        // Verificamos si la respuesta es JSON
+        // --- 4. VERIFICACIÓN DE RESPUESTA ---
         const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            const text = await response.text();
-            console.error("❌ Error: Hugging Face devolvió HTML o Texto en vez de JSON:", text);
-            throw new Error(`HF devolvió formato incorrecto (${response.status}). Posiblemente el servidor está apagado o la URL está mal.`);
-        }
 
-        const data = await response.json();
-
-        // Si Hugging Face dice que la contraseña está mal (401), lo pasamos al front
-        if (!response.ok) {
+        // Si devuelve JSON, todo bien (sea éxito o error de credenciales)
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            // Retornamos el status original de HF (200, 401, 403, etc.)
             return res.status(response.status).json(data);
         }
 
-        // Éxito total
-        return res.status(200).json(data);
+        // Si NO es JSON, es un error de infraestructura (HTML de Sleeping o Error 500 de Python)
+        else {
+            const text = await response.text();
+            console.error("❌ RESPUESTA NO-JSON RECIBIDA:", text.slice(0, 200)); // Logueamos el inicio del HTML
+
+            return res.status(502).json({
+                error: "El servidor de IA no respondió correctamente.",
+                details: "Es probable que el Space esté 'Sleeping' (dormido). Intenta de nuevo en 30 segundos.",
+                raw_response: text.slice(0, 100) // Enviamos un poco del error al front para depurar
+            });
+        }
 
     } catch (error) {
-        console.error("🔥 ERROR CRÍTICO EN VERCEL:", error);
+        console.error("🔥 ERROR INTERNO VERCEL:", error);
+
+        if (error.name === 'AbortError') {
+            return res.status(504).json({ error: "Tiempo de espera agotado. El servidor de IA está despertando." });
+        }
+
         return res.status(500).json({
-            error: "Error interno del servidor Vercel",
+            error: "Error de conexión en el proxy",
             details: error.message
         });
     }
