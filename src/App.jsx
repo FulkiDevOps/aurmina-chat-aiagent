@@ -15,7 +15,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
         setError('');
 
         try {
-            const res = await fetch('/login', {
+            const res = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: user, password: pass })
@@ -90,7 +90,7 @@ const AurminaChat = ({ token, onLogout }) => {
         setSending(true);
 
         try {
-            const res = await fetch('/chat', {
+            const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
