@@ -2,185 +2,123 @@ import { useState } from 'react';
 import './App.css';
 
 function App() {
-    // --- ESTADOS ---
-    // Al iniciar en null, obligamos a ver el Login primero
     const [token, setToken] = useState(null);
 
-    // Estados para el Login
+    // Login States
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loginError, setLoginError] = useState('');
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // Estados para el Chat
+    // Chat States
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const [isSending, setIsSending] = useState(false);
+    const [sending, setSending] = useState(false);
 
-    // --- FUNCIÓN DE LOGIN ---
+    // --- BOTÓN PARA MINIMIZAR/ABRIR (Opcional, muy útil para widgets) ---
+    const [isOpen, setIsOpen] = useState(false);
+
     const handleLogin = async (e) => {
         e.preventDefault();
-        setLoginError('');
-        setIsLoggingIn(true);
-
+        setError('');
+        setLoading(true);
         try {
-            // Petición al backend para validar usuario
-            const response = await fetch('/api/login', {
+            const res = await fetch('/api/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
             });
-
-            if (!response.ok) throw new Error('Credenciales incorrectas');
-
-            const data = await response.json();
-            // ¡AQUÍ OCURRE LA MAGIA!
-            // Al guardar el token, React detecta el cambio y muestra el Chat
+            if (!res.ok) throw new Error();
+            const data = await res.json();
             setToken(data.access_token);
-        } catch (err) {
-            setLoginError("Usuario o contraseña incorrectos.");
+        } catch {
+            setError('Credenciales incorrectas');
         } finally {
-            setIsLoggingIn(false);
+            setLoading(false);
         }
     };
 
-    // --- FUNCIÓN DE CHAT ---
-    const handleSendMessage = async () => {
-        if (!input.trim()) return;
-
-        const userMsg = input;
-        // Agregamos mensaje del usuario visualmente
-        setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+    const handleSend = async () => {
+        if(!input.trim()) return;
+        const text = input;
         setInput('');
-        setIsSending(true);
+        setMessages(prev => [...prev, {role: 'user', text}]);
+        setSending(true);
 
         try {
-            const response = await fetch('/api/chat', {
+            const res = await fetch('/api/chat', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // Enviamos el pase VIP en cada mensaje
-                    'X-Auth-Token': token
-                },
-                body: JSON.stringify({
-                    texto: userMsg,
-                    session_id: "sesion-demo-1"
-                }),
+                headers: {'Content-Type': 'application/json', 'X-Auth-Token': token},
+                body: JSON.stringify({texto: text, session_id: 'widget-user'})
             });
-
-            if (response.status === 403) {
-                alert("Tu sesión expiró.");
-                setToken(null); // Esto nos devuelve a la pantalla de Login
-                return;
-            }
-
-            const data = await response.json();
-            setMessages(prev => [...prev, { role: 'ai', text: data.respuesta_ia }]);
-
-        } catch (error) {
-            setMessages(prev => [...prev, { role: 'ai', text: "Error de conexión." }]);
+            if(res.status === 403) { setToken(null); return; } // Token vencido
+            const data = await res.json();
+            setMessages(prev => [...prev, {role: 'ai', text: data.respuesta_ia}]);
+        } catch {
+            setMessages(prev => [...prev, {role: 'ai', text: 'Error de red.'}]);
         } finally {
-            setIsSending(false);
+            setSending(false);
         }
     };
 
-    // ==========================================
-    // 🚪 PANTALLA 1: EL MURO DE LOGIN
-    // ==========================================
-    // Si NO hay token, retornamos esto y el código se detiene aquí.
-    // El chat NO se renderiza.
+    // 🔴 ESTADO 1: SI ESTÁ CERRADO (SOLO MUESTRA UN BOTÓN FLOTANTE)
+    if (!isOpen) {
+        return (
+            <div onClick={() => setIsOpen(true)} style={{
+                cursor: 'pointer',
+                width: '60px', height: '60px',
+                background: '#0070f3', borderRadius: '50%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                color: 'white', fontSize: '30px'
+            }}>
+                💬
+            </div>
+        );
+    }
+
+    // 🟠 ESTADO 2: ABIERTO PERO SIN LOGIN
     if (!token) {
         return (
-            <div className="login-wrapper">
-                <div className="login-card">
-                    <div className="login-header">
-                        <span className="login-icon">🛡️</span>
-                        <h2 className="login-title">Protego Aurmina</h2>
-                        <p className="login-subtitle">Acceso restringido a personal autorizado</p>
-                    </div>
-
-                    <form onSubmit={handleLogin}>
-                        <div className="form-group">
-                            <label className="form-label">Usuario</label>
-                            <input
-                                className="form-input"
-                                type="text"
-                                placeholder="Ej: aurmina_admin"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label className="form-label">Contraseña</label>
-                            <input
-                                className="form-input"
-                                type="password"
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-
-                        <button type="submit" className="login-btn" disabled={isLoggingIn}>
-                            {isLoggingIn ? 'Verificando...' : 'Ingresar al Sistema'}
-                        </button>
+            <div className="widget-container">
+                <div style={{textAlign:'right', padding:'10px', cursor:'pointer'}} onClick={() => setIsOpen(false)}>✕</div>
+                <div className="login-view">
+                    <div className="login-icon">🛡️</div>
+                    <h3 className="login-title">Acceso Protego</h3>
+                    <form onSubmit={handleLogin} style={{width: '100%'}}>
+                        <input className="form-input" placeholder="Usuario" value={username} onChange={e=>setUsername(e.target.value)} />
+                        <input className="form-input" type="password" placeholder="Pass" value={password} onChange={e=>setPassword(e.target.value)} />
+                        <button className="primary-btn" disabled={loading}>{loading ? '...' : 'Entrar'}</button>
                     </form>
-
-                    {loginError && <div className="error-msg">{loginError}</div>}
+                    {error && <p className="error-msg">{error}</p>}
                 </div>
             </div>
         );
     }
 
-    // ==========================================
-    // 💬 PANTALLA 2: EL CHAT
-    // ==========================================
-    // Si llegamos aquí, es porque SÍ hay token.
+    // 🟢 ESTADO 3: CHAT ACTIVO
     return (
-        <div className="app-container">
-            <div className="chat-interface">
-                <header className="chat-header">
-                    <div className="header-info">
-                        <h2>🛡️ Agente Quirúrgico</h2>
-                        <span className="status-badge">En línea</span>
+        <div className="widget-container">
+            <header className="chat-header">
+                <h3>Agente Aurmina</h3>
+                <div style={{display:'flex', gap:'10px'}}>
+                    <button className="logout-btn" onClick={() => setToken(null)}>Salir</button>
+                    <button className="logout-btn" onClick={() => setIsOpen(false)}>_</button>
+                </div>
+            </header>
+
+            <div className="messages-area">
+                {messages.map((m, i) => (
+                    <div key={i} className={`message-bubble ${m.role === 'user' ? 'user-msg' : 'ai-msg'}`}>
+                        {m.text}
                     </div>
-                    <button onClick={() => setToken(null)} className="logout-btn">
-                        Cerrar Sesión
-                    </button>
-                </header>
+                ))}
+                {sending && <small style={{color:'#999'}}>Escribiendo...</small>}
+            </div>
 
-                <div className="messages-area">
-                    {messages.length === 0 && (
-                        <div className="welcome-placeholder">
-                            <span className="placeholder-icon">👋</span>
-                            <h3>Bienvenido, Admin</h3>
-                            <p>Estoy listo para consultar los protocolos quirúrgicos.</p>
-                        </div>
-                    )}
-
-                    {messages.map((msg, idx) => (
-                        <div key={idx} className={`message-row ${msg.role}`}>
-                            <div className="message-bubble">
-                                {msg.text}
-                            </div>
-                        </div>
-                    ))}
-                    {isSending && <div className="loading-indicator">Analizando base de datos...</div>}
-                </div>
-
-                <div className="input-area">
-                    <input
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                        placeholder="Escribe tu consulta..."
-                        className="chat-input"
-                    />
-                    <button onClick={handleSendMessage} disabled={isSending} className="send-btn">
-                        ➤
-                    </button>
-                </div>
+            <div className="input-area">
+                <input className="chat-input" value={input} onChange={e=>setInput(e.target.value)} onKeyPress={e=>e.key==='Enter' && handleSend()} placeholder="..." />
+                <button onClick={handleSend} style={{background:'none', border:'none', cursor:'pointer'}}>➤</button>
             </div>
         </div>
     );
