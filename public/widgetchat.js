@@ -32,7 +32,7 @@
     `;
     // ... (HTML interno del chat igual que antes) ...
     chat.innerHTML = `
-        <div style="background:#333;color:white;padding:10px;display:flex;justify-content:space-between;align-items:center;">
+        <div style="background:#fff;color:white;padding:10px;display:flex;justify-content:space-between;align-items:center;">
             <span>Asistente Virtual</span>
             <button id="closeChat" style="background:none;border:none;color:white;font-size:16px;cursor:pointer;">✕</button>
         </div>

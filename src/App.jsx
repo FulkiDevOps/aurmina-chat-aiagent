@@ -42,7 +42,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
                 {/* Estos textos ahora tendrán estilos oscuros gracias al CSS de abajo */}
                 <h2 className="login-title">Aurmina Agent</h2>
-                <p className="login-subtitle">Access to chat with the Aurmina Agent</p>
+                <p className="login-subtitle">Acceso to chat with the Aurmina Agent</p>
 
                 <form onSubmit={handleSubmit}>
                     {/* ... inputs y botón ... */}
@@ -60,7 +60,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
                         onChange={e => setPass(e.target.value)}
                     />
                     <button className="login-btn" disabled={loading}>
-                        {loading ? 'Logging in...' : 'Log in'}
+                        {loading ? 'Verificando...' : 'Ingresar'}
                     </button>
                 </form>
                 {error && <p className="error-text">{error}</p>}
@@ -126,8 +126,8 @@ const AurminaChat = ({ token, onLogout }) => {
                 <div className="contact-item active">
                     <div className="avatar">🤖</div>
                     <div className="contact-info">
-                        <div className="name">Aurmina AI Agent</div>
-                        <div className="last-msg">On line</div>
+                        <div className="name">Agente Quirúrgico</div>
+                        <div className="last-msg">En línea</div>
                     </div>
                 </div>
             </div>
@@ -136,8 +136,8 @@ const AurminaChat = ({ token, onLogout }) => {
             <div className="chat-main">
                 <header className="chat-header">
                     <div className="chat-info">
-                        <h3>Aurmina Agent</h3>
-                        <span>bot • on line</span>
+                        <h3>Agente Quirúrgico</h3>
+                        <span>bot • en línea</span>
                     </div>
                     <button onClick={onLogout} className="logout-icon-btn">⎋</button>
                 </header>
@@ -146,7 +146,7 @@ const AurminaChat = ({ token, onLogout }) => {
                     <div className="messages-list">
                         {messages.length === 0 && (
                             <div className="empty-state">
-                                <span>👋🏻 Hi, I'm the Aurmina AI Agent. You can inquirie about our product, shipping, or any other question you might have. </span>
+                                <span>👋 Hi, I'm Aurmina AI Agent. How can I help you today?</span>
                             </div>
                         )}
                         {messages.map((m, i) => (
@@ -167,7 +167,7 @@ const AurminaChat = ({ token, onLogout }) => {
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         onKeyPress={e => e.key === 'Enter' && handleSend()}
-                        placeholder="Type your message..."
+                        placeholder="Escribir un mensaje..."
                     />
                     <button onClick={handleSend} disabled={sending}>➤</button>
                 </div>
