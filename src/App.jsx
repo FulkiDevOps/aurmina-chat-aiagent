@@ -23,7 +23,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
             const data = await res.json();
 
-            if (!res.ok) throw new Error(data.detail || 'Credenciales inválidas');
+            if (!res.ok) throw new Error(data.detail || 'Invalid credentials');
 
             // Si éxito, pasamos el token al padre
             onLoginSuccess(data.access_token);
@@ -42,7 +42,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
                 {/* Estos textos ahora tendrán estilos oscuros gracias al CSS de abajo */}
                 <h2 className="login-title">Aurmina Agent</h2>
-                <p className="login-subtitle">Acceso to chat with the Aurmina Agent</p>
+                <p className="login-subtitle">Access to chat with the Aurmina Agent</p>
 
                 <form onSubmit={handleSubmit}>
                     {/* ... inputs y botón ... */}
@@ -60,7 +60,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
                         onChange={e => setPass(e.target.value)}
                     />
                     <button className="login-btn" disabled={loading}>
-                        {loading ? 'Verificando...' : 'Ingresar'}
+                        {loading ? 'Loggin in...' : 'Log in'}
                     </button>
                 </form>
                 {error && <p className="error-text">{error}</p>}
@@ -100,7 +100,7 @@ const AurminaChat = ({ token, onLogout }) => {
             });
 
             if (res.status === 403) {
-                alert("Sesión caducada");
+                alert("Session expired");
                 onLogout();
                 return;
             }
@@ -112,7 +112,7 @@ const AurminaChat = ({ token, onLogout }) => {
                 time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
             }]);
         } catch (err) {
-            setMessages(prev => [...prev, { role: 'ai', text: '⚠️ Error de conexión.' }]);
+            setMessages(prev => [...prev, { role: 'ai', text: '⚠️ Conection error.' }]);
         } finally {
             setSending(false);
         }
@@ -122,12 +122,12 @@ const AurminaChat = ({ token, onLogout }) => {
         <div className="telegram-layout">
             {/* Barra Lateral (Opcional, decorativa) */}
             <div className="sidebar">
-                <div className="sidebar-header">Aurmina AI</div>
+                <div className="sidebar-header">Aurmina AI Agent</div>
                 <div className="contact-item active">
                     <div className="avatar">🤖</div>
                     <div className="contact-info">
-                        <div className="name">Agente Quirúrgico</div>
-                        <div className="last-msg">En línea</div>
+                        <div className="name">Aurmina Agent</div>
+                        <div className="last-msg">On line</div>
                     </div>
                 </div>
             </div>
@@ -136,8 +136,8 @@ const AurminaChat = ({ token, onLogout }) => {
             <div className="chat-main">
                 <header className="chat-header">
                     <div className="chat-info">
-                        <h3>Agente Quirúrgico</h3>
-                        <span>bot • en línea</span>
+                        <h3>Aurmina Agent</h3>
+                        <span>Agent • on line</span>
                     </div>
                     <button onClick={onLogout} className="logout-icon-btn">⎋</button>
                 </header>
@@ -157,7 +157,7 @@ const AurminaChat = ({ token, onLogout }) => {
                                 </div>
                             </div>
                         ))}
-                        {sending && <div className="msg-row ai"><div className="msg-bubble typing">Escribiendo...</div></div>}
+                        {sending && <div className="msg-row ai"><div className="msg-bubble typing">Typing...</div></div>}
                         <div ref={messagesEndRef} />
                     </div>
                 </div>
@@ -167,7 +167,7 @@ const AurminaChat = ({ token, onLogout }) => {
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         onKeyPress={e => e.key === 'Enter' && handleSend()}
-                        placeholder="Escribir un mensaje..."
+                        placeholder="Type your message..."
                     />
                     <button onClick={handleSend} disabled={sending}>➤</button>
                 </div>
