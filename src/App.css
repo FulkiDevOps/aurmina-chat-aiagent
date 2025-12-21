@@ -116,7 +116,7 @@
 /* Barra de input */
 .input-bar {
   background: white;
-  padding: 15px 20px;
+  padding: 0px 20px;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -128,9 +128,9 @@
   border: none;
   font-size: 16px;
   outline: none;
-  border-radius: 3px;
+  border-radius: 8px;
 }
-.input-bar button { background: none; font-size: 24px; color: #0088cc; cursor: pointer; border-radius: 3px; border-color: #1a1a1a}
+.input-bar button { background: none; font-size:30px; color: #0088cc; cursor: pointer; border: none}
 .input-bar button:hover { color: #0077b5; }
 .input-bar button:disabled { color: #ccc; }
 
