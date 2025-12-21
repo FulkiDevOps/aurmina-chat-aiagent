@@ -54,7 +54,7 @@
   padding: 0 20px;
 }
 
-.chat-info h3 { font-size: 16px; margin: 0; }
+.chat-info h3 { font-size: 16px; margin: 0; color: #1a1a1a}
 .chat-info span { font-size: 13px; color: #999; }
 /* === BOTÓN LOGOUT (ESTILO IGUAL AL LOGIN) === */
 .logout-btn {
@@ -128,8 +128,9 @@
   border: none;
   font-size: 16px;
   outline: none;
+  border-radius: 3px;
 }
-.input-bar button { background: none; border: none; font-size: 24px; color: #0088cc; cursor: pointer; }
+.input-bar button { background: none; font-size: 24px; color: #0088cc; cursor: pointer; border-radius: 3px; border-color: #1a1a1a}
 .input-bar button:hover { color: #0077b5; }
 .input-bar button:disabled { color: #ccc; }
 
