@@ -42,7 +42,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
                 {/* Estos textos ahora tendrán estilos oscuros gracias al CSS de abajo */}
                 <h2 className="login-title">Aurmina Agent</h2>
-                <p className="login-subtitle">Acceso to chat with the Aurmina Agent</p>
+                <p className="login-subtitle">Access to chat with the Aurmina Agent</p>
 
                 <form onSubmit={handleSubmit}>
                     {/* ... inputs y botón ... */}
@@ -60,7 +60,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
                         onChange={e => setPass(e.target.value)}
                     />
                     <button className="login-btn" disabled={loading}>
-                        {loading ? 'Verificando...' : 'Ingresar'}
+                        {loading ? 'Logging in...' : 'Log in'}
                     </button>
                 </form>
                 {error && <p className="error-text">{error}</p>}
@@ -137,7 +137,7 @@ const AurminaChat = ({ token, onLogout }) => {
                 <header className="chat-header">
                     <div className="chat-info">
                         <h3>Aurmina Agent</h3>
-                        <span>bot • on línea</span>
+                        <span>bot • on line</span>
                     </div>
                     <button onClick={onLogout} className="logout-icon-btn">⎋</button>
                 </header>
@@ -167,7 +167,7 @@ const AurminaChat = ({ token, onLogout }) => {
                         value={input}
                         onChange={e => setInput(e.target.value)}
                         onKeyPress={e => e.key === 'Enter' && handleSend()}
-                        placeholder="Escribir un mensaje..."
+                        placeholder="Type your message..."
                     />
                     <button onClick={handleSend} disabled={sending}>➤</button>
                 </div>
