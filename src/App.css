@@ -56,8 +56,22 @@
 
 .chat-info h3 { font-size: 16px; margin: 0; }
 .chat-info span { font-size: 13px; color: #999; }
-.logout-icon-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #666; }
+/* === BOTÓN LOGOUT (ESTILO IGUAL AL LOGIN) === */
+.logout-btn {
+  background-color: #0088cc; /* Mismo azul que el login */
+  color: white;              /* Texto blanco */
+  border: none;
+  border-radius: 8px;        /* Bordes redondeados igual que login */
+  padding: 8px 16px;         /* Un poco más pequeño para que quepa en el header */
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s; /* Efecto suave al pasar el mouse */
+}
 
+.logout-btn:hover {
+  background-color: #0077b5; /* Mismo azul oscuro del hover del login */
+}
 /* Fondo del chat (mismos colores telegram) */
 .chat-background {
   flex: 1;
