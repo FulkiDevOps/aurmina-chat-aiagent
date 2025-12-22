@@ -23,8 +23,8 @@
 
 .telegram-layout {
   display: flex;
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100dvw;
   overflow: hidden;
   justify-content: center; /* Centra el chat horizontalmente */
   background-color: #212121; /* Fondo oscuro exterior (fuera del chat) */
@@ -115,8 +115,8 @@
 
 /* Barra de input */
 .input-bar {
-  background: white;
-  padding: 0px 20px;
+  background: #8e9fae;
+  padding: 0 20px;
   display: flex;
   gap: 15px;
   align-items: center;
@@ -130,7 +130,7 @@
   outline: none;
   border-radius: 8px;
 }
-.input-bar button { background: none; font-size:30px; color: #0088cc; cursor: pointer; border: none}
+.input-bar button { background: #242424; font-size:32px; color: #0088cc; cursor: pointer; }
 .input-bar button:hover { color: #0077b5; }
 .input-bar button:disabled { color: #ccc; }
 
