@@ -76,23 +76,23 @@
         }
     }
     function renderTextWithLists(text) {
-        // Escape básico (seguridad)
-        text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        // 1. Escapar HTML
+        let rendered = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-        // Si detecta al menos un bullet •
-        if (text.includes("•")) {
-            // Asegura un salto de línea antes del PRIMER bullet
-            text = text.replace(/\s*•/, "<br><br>•");
-            // Asegura salto de línea antes de CADA bullet
-            text = text.replace(/\s*•\s*/g, "<br><br>• ");
-            // Limpia posibles saltos iniciales
-            text = text.replace(/^<br><br>/, "");
-        }
+        // 2. Convertir saltos de línea dobles en párrafos reales
+        // Esto respeta el \n\n que pediste en el System Prompt
+        rendered = rendered.split(/\n\n+/).map(para => {
+            if (para.trim().startsWith("•")) {
+                // Si el bloque es un bullet, lo tratamos como un elemento de lista
+                return `<div style="margin-bottom: 12px;">${para.trim()}</div>`;
+            }
+            return `<p style="margin-bottom: 12px;">${para.trim()}</p>`;
+        }).join("");
 
-        // Reemplaza cualquier \n restante con <br> para manejar otros saltos (como en numerados o párrafos)
-        text = text.replace(/\n/g, "<br>");
+        // 3. Si quedan saltos de línea simples, los convertimos a br
+        rendered = rendered.replace(/\n/g, "<br>");
 
-        return `<p>${text}</p>`;
+        return rendered;
     }
 
 
