@@ -13,9 +13,9 @@
 .login-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; margin-top: 0; }
 .login-subtitle { font-size: 14px; color: #666666; margin-bottom: 30px; }
 .login-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; color: #ffffff; }
-.login-btn { width: 100%; padding: 12px; background: #0088cc; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-.login-btn:hover { background: #0077b5; }
-.login-btn:disabled { background-color: #ccc; }
+.login-btn { width: 100%; padding: 12px; background: #141414; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+.login-btn:hover { color: rgba(20, 20, 20, 0.62)}
+.login-btn:disabled { background-color: rgba(20, 20, 20, 0.29); }
 .error-text { color: red; font-size: 14px; margin-top: 10px; }
 
 
@@ -115,7 +115,7 @@
 
 /* Barra de input */
 .input-bar {
-  background: #8e9fae;
+  background: #D5CDB4 /*#8e9fae;*/
   padding: 0 20px;
   display: flex;
   gap: 15px;
@@ -129,8 +129,8 @@
   outline: none;
   border-radius: 8px;
 }
-.input-bar button { background: #242424; font-size:24px; color: #0088cc; cursor: pointer; }
-.input-bar button:hover { color: #0077b5; }
+.input-bar button { background: #141414; font-size:24px; color: #0088cc; cursor: pointer; }
+.input-bar button:hover { color: rgba(20, 20, 20, 0.62); }
 .input-bar button:disabled { color: #ccc; }
 
 .empty-state {
