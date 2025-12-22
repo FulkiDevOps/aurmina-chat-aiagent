@@ -77,26 +77,43 @@
     }
 
     function renderTextWithLists(text) {
-        // Escape básico
+        // Escape básico (seguridad)
         text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-        // Separar por bullets
-        const parts = text.split("• ");
+        // ---------- BULLET LIST (•) ----------
+        if (text.includes("• ")) {
+            const parts = text.split("• ");
 
-        // Si no hay lista, render normal
-        if (parts.length === 1) {
-            return `<p>${text}</p>`;
+            let html = `<p>${parts[0].trim()}</p><ul>`;
+
+            for (let i = 1; i < parts.length; i++) {
+                html += `<li>${parts[i].trim()}</li>`;
+            }
+
+            html += "</ul>";
+            return html;
         }
 
-        let html = `<p>${parts[0].trim()}</p><ul>`;
+        // ---------- NUMBERED LIST (1. 2. 3.) ----------
+        const numberedItems = text.match(/\d+\.\s+/g);
 
-        for (let i = 1; i < parts.length; i++) {
-            html += `<li>${parts[i].trim()}</li>`;
+        if (numberedItems && numberedItems.length >= 2) {
+            // Separar intro del resto
+            const intro = text.split(/\d+\.\s+/)[0].trim();
+            const items = text.split(/\d+\.\s+/).slice(1);
+
+            let html = intro ? `<p>${intro}</p><ol>` : `<ol>`;
+
+            items.forEach(item => {
+                html += `<li>${item.trim()}</li>`;
+            });
+
+            html += "</ol>";
+            return html;
         }
 
-        html += "</ul>";
-        return html;
-    }
+        // ---------- TEXTO NORMAL ----------
+        return `<p>${text}</p>`;
 
     function renderMessages() {
         $messages.innerHTML = "";
