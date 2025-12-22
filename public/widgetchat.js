@@ -76,23 +76,18 @@
         }
     }
 
-    function renderTextWithLists(text) {
-        // Escape básico (seguridad)
-        text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    function renderText(text) {
+        // Escape básico
+        text = text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
 
-        // Si detecta al menos un bullet
-        if (text.includes("•")) {
-            // Asegura un salto de línea antes del PRIMER bullet
-            text = text.replace(/\s*•/, "<br><br>•");
+        // Convertir saltos reales a HTML
+        text = text.replace(/\n\n/g, "<br><br>");
+        text = text.replace(/\n/g, "<br>");
 
-            // Asegura salto de línea antes de CADA bullet
-            text = text.replace(/\s*•\s*/g, "<br><br>• ");
-
-            // Limpia posibles saltos iniciales
-            text = text.replace(/^<br><br>/, "");
-        }
-
-        return `<p>${text}</p>`;
+        return `<div>${text}</div>`;
     }
 
 
@@ -106,7 +101,7 @@
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
             `;
-            div.innerHTML = renderTextWithLists(m.text);
+            div.innerHTML = renderText(m.text);
             $messages.appendChild(div);
         });
 
