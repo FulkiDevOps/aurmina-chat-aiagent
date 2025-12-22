@@ -58,11 +58,11 @@
 .chat-info span { font-size: 13px; color: #999; }
 /* === BOTÓN LOGOUT (ESTILO IGUAL AL LOGIN) === */
 .logout-btn {
-  background-color: #0088cc; /* Mismo azul que el login */
+  background-color: #242424; /* Mismo azul que el login */
   color: white;              /* Texto blanco */
   border: none;
   border-radius: 8px;        /* Bordes redondeados igual que login */
-  padding: 8px 16px;         /* Un poco más pequeño para que quepa en el header */
+  padding: 10px 20px;         /* Un poco más pequeño para que quepa en el header */
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
@@ -75,7 +75,7 @@
 /* Fondo del chat (mismos colores telegram) */
 .chat-background {
   flex: 1;
-  background-color: #8e9fae;
+  background-color: #8e9fae; /*#D5CDB4*/
   background-image: url("https://web.telegram.org/img/bg_0.png");
   background-size: cover;
   overflow-y: auto;
@@ -107,7 +107,7 @@
 }
 
 /* Colores de burbuja (Intactos) */
-.msg-row.user .msg-bubble { background: #effdde; color: black; border-bottom-right-radius: 2px; }
+.msg-row.user .msg-bubble { background: #E3EDC0; color: black; border-bottom-right-radius: 2px; } /*#E3EDC0 - antes effdde*/
 .msg-row.ai .msg-bubble { background: white; color: black; border-bottom-left-radius: 2px; }
 
 .msg-time { font-size: 11px; color: #999; text-align: right; margin-top: 4px; display: block;}

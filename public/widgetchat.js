@@ -1,16 +1,23 @@
 (function() {
 
+    // Limpiamos cualquier rastro previo si recargas el script sin refrescar la página
+    const oldLauncher = document.querySelector("#aurmina-launcher");
+    if (oldLauncher) oldLauncher.remove();
+    const oldChat = document.querySelector("#aurmina-chat");
+    if (oldChat) oldChat.remove();
+
     let isOpen = false;
     let sessionId = Math.random().toString(36).substring(7);
-    let isLoading = false; // Variable clave para el bloqueo
+    let isLoading = false;
     let messages = [
         { text: "Hi! I'm the Aurmina AI Agent. How can I help you today?", sender: "bot" }
     ];
 
     const API_URL = "/api/chat";
 
-    // 1. Crear lanzador (botón flotante)
+    // 1. LAUNCHER (Botón flotante)
     const launcher = document.createElement("div");
+    launcher.id = "aurmina-launcher"; // ID para evitar duplicados
     launcher.style.cssText = `
         position: fixed; bottom: 20px; right: 20px; width: 70px; height: 70px;
         background: #007bff; border-radius: 50%; display: flex;
@@ -18,13 +25,13 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.3); z-index: 9999; transition: transform 0.3s;
     `;
     launcher.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/724/724715.png" style="width:40px;height:40px;filter:invert(1);" />`;
-    // Efecto hover simple
     launcher.onmouseenter = () => launcher.style.transform = "scale(1.1)";
     launcher.onmouseleave = () => launcher.style.transform = "scale(1)";
     document.body.appendChild(launcher);
 
-    // 2. Crear ventana de chat
+    // 2. CHAT CONTAINER
     const chat = document.createElement("div");
+    chat.id = "aurmina-chat"; // ID para evitar duplicados
     chat.style.cssText = `
         display:none; position: fixed; bottom: 20px; right: 20px;
         width: 400px; height: 500px; background: white; border-radius: 10px;
@@ -40,7 +47,7 @@
         </div>
         <div id="messagesArea" style="flex:1;padding:15px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:#f9f9f9;"></div>
         <div style="padding:15px;border-top:1px solid #eee;display:flex;background:white;">
-            <input id="chatInput" placeholder="Type here..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:4px;outline:none;" />
+            <input id="chatInput" type="text" placeholder="Type here..." style="flex:1;padding:10px;border:1px solid #ddd;border-radius:4px;outline:none;" />
             <button id="sendBtn" style="margin-left:10px;padding:10px 20px;background:#007bff;color:white;border:none;border-radius:4px;cursor:pointer;font-weight:bold;transition:background 0.3s;">Enviar</button>
         </div>
     `;
@@ -51,25 +58,20 @@
     const $send = chat.querySelector("#sendBtn");
     const $close = chat.querySelector("#closeChat");
 
-    // --- FUNCIÓN DE CONTROL DE ESTADO (UI) ---
+    // --- LÓGICA DE BLOQUEO UI ---
     function updateUIState() {
         if (isLoading) {
-            // BLOQUEO TOTAL
-            $input.disabled = true;          // Deshabilita escritura
-            $send.disabled = true;           // Deshabilita clic
-            $input.placeholder = "Wating for the answer...";
-            $send.style.background = "#ccc"; // Feedback visual gris
+            $input.disabled = true;           // Deshabilita el input físicamente
+            $send.disabled = true;            // Deshabilita el botón
+            $input.placeholder = "Waiting for the answer...";
+            $send.style.background = "#ccc";
             $send.style.cursor = "not-allowed";
-            $input.style.cursor = "not-allowed";
         } else {
-            // DESBLOQUEO
             $input.disabled = false;
             $send.disabled = false;
             $input.placeholder = "Type here...";
             $send.style.background = "#007bff";
             $send.style.cursor = "pointer";
-            $input.style.cursor = "text";
-            // Recuperar el foco para escribir rápido
             setTimeout(() => $input.focus(), 10);
         }
     }
@@ -98,8 +100,10 @@
     }
 
     async function sendMessage() {
-        // SEGURIDAD 1: Si está cargando, abortamos la función inmediatamente.
-        if (isLoading) return;
+        // DOBLE CHECK DE SEGURIDAD
+        if (isLoading) {
+            return;
+        }
         if (!$input.value.trim()) return;
 
         const text = $input.value;
@@ -107,9 +111,9 @@
 
         messages.push({ text, sender: "user" });
 
-        isLoading = true;
+        isLoading = true; // Activamos bandera
+        updateUIState();  // Bloqueamos interfaz visualmente
         renderMessages();
-        updateUIState();
 
         try {
             const res = await fetch(API_URL, {
@@ -128,15 +132,16 @@
 
         } catch (err) {
             console.error(err);
-            messages.push({ text: "Connection error. Please try later.", sender: "bot" });
+            messages.push({ text: "Connection error. Please Try later.", sender: "bot" });
         } finally {
-            isLoading = false;
+            isLoading = false; // Desactivamos bandera
             renderMessages();
-            updateUIState(); // <--- Aquí se desbloquea todo
+            updateUIState();   // Desbloqueamos interfaz
         }
     }
 
     // --- EVENTOS ---
+
     launcher.onclick = () => {
         launcher.style.display = "none";
         chat.style.display = "flex";
@@ -151,15 +156,20 @@
         isOpen = false;
     };
 
-    // Clic en botón Enviar
     $send.onclick = sendMessage;
 
-    // SEGURIDAD 2: Evento de teclado (Enter)
-    $input.addEventListener("keydown", e => {
-        // Solo enviamos si es Enter Y NO está cargando
-        if (e.key === "Enter" && !isLoading) {
-            sendMessage();
+    // SOLUCIÓN CLAVE PARA EL ENTER:
+    // Usamos .onkeydown en lugar de .addEventListener para sobrescribir cualquier listener viejo
+    $input.onkeydown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // Evita salto de línea o submits extraños
+
+            if (!isLoading) {
+                sendMessage();
+            } else {
+                console.log("Enter ignorado: esperando respuesta...");
+            }
         }
-    });
+    };
 
 })();
