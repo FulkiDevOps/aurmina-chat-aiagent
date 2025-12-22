@@ -76,21 +76,6 @@
         }
     }
 
-    function renderText(text) {
-        // Escape básico
-        text = text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-
-        // Convertir saltos reales a HTML
-        text = text.replace(/\n\n/g, "<br><br>");
-        text = text.replace(/\n/g, "<br>");
-
-        return `<div>${text}</div>`;
-    }
-
-
     function renderMessages() {
         $messages.innerHTML = "";
         messages.forEach(m => {
@@ -101,7 +86,7 @@
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
             `;
-            div.innerHTML = renderText(m.text);
+            div.innerHTML = m.text;
             $messages.appendChild(div);
         });
 
