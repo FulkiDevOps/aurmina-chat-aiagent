@@ -75,7 +75,7 @@
 /* Fondo del chat (mismos colores telegram) */
 .chat-background {
   flex: 1;
-  background-color: #8e9fae; /*#D5CDB4*/
+  background-color: #D5CDB4; /*#D5CDB4*/
   background-image: url("https://web.telegram.org/img/bg_0.png");
   background-size: cover;
   overflow-y: auto;
