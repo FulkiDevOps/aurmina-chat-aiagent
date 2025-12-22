@@ -120,7 +120,6 @@
   display: flex;
   gap: 15px;
   align-items: center;
-  border-top: 1px solid #ddd;
 }
 .input-bar input {
   flex: 1;
@@ -130,7 +129,7 @@
   outline: none;
   border-radius: 8px;
 }
-.input-bar button { background: #242424; font-size:32px; color: #0088cc; cursor: pointer; }
+.input-bar button { background: #242424; font-size:24px; color: #0088cc; cursor: pointer; }
 .input-bar button:hover { color: #0077b5; }
 .input-bar button:disabled { color: #ccc; }
 
