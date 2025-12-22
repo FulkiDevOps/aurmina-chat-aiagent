@@ -80,40 +80,21 @@
         // Escape básico (seguridad)
         text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-        // ---------- BULLET LIST (•) ----------
-        if (text.includes("• ")) {
-            const parts = text.split("• ");
+        // Si detecta al menos un bullet
+        if (text.includes("•")) {
+            // Asegura un salto de línea antes del PRIMER bullet
+            text = text.replace(/\s*•/, "<br><br>•");
 
-            let html = `<p>${parts[0].trim()}</p><ul>`;
+            // Asegura salto de línea antes de CADA bullet
+            text = text.replace(/\s*•\s*/g, "<br><br>• ");
 
-            for (let i = 1; i < parts.length; i++) {
-                html += `<li>${parts[i].trim()}</li>`;
-            }
-
-            html += "</ul>";
-            return html;
+            // Limpia posibles saltos iniciales
+            text = text.replace(/^<br><br>/, "");
         }
 
-        // ---------- NUMBERED LIST (1. 2. 3.) ----------
-        const numberedItems = text.match(/\d+\.\s+/g);
-
-        if (numberedItems && numberedItems.length >= 2) {
-            // Separar intro del resto
-            const intro = text.split(/\d+\.\s+/)[0].trim();
-            const items = text.split(/\d+\.\s+/).slice(1);
-
-            let html = intro ? `<p>${intro}</p><ol>` : `<ol>`;
-
-            items.forEach(item => {
-                html += `<li>${item.trim()}</li>`;
-            });
-
-            html += "</ol>";
-            return html;
-        }
-
-        // ---------- TEXTO NORMAL ----------
         return `<p>${text}</p>`;
+    }
+
 
     function renderMessages() {
         $messages.innerHTML = "";
