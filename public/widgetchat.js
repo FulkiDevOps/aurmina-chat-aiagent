@@ -76,17 +76,26 @@
         }
     }
 
-    function formatMessage(text) {
-        // Escapar HTML básico (seguridad)
+    function renderTextWithLists(text) {
+        // Escape básico
         text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-        // Forzar salto antes de cada bullet
-        text = text.replace(/•\s*/g, "<br><br>• ");
+        // Separar por bullets
+        const parts = text.split("• ");
 
-        // Limpiar exceso inicial
-        text = text.replace(/^<br><br>/, "");
+        // Si no hay lista, render normal
+        if (parts.length === 1) {
+            return `<p>${text}</p>`;
+        }
 
-        return text;
+        let html = `<p>${parts[0].trim()}</p><ul>`;
+
+        for (let i = 1; i < parts.length; i++) {
+            html += `<li>${parts[i].trim()}</li>`;
+        }
+
+        html += "</ul>";
+        return html;
     }
 
     function renderMessages() {
