@@ -115,7 +115,7 @@
 
 /* Barra de input */
 .input-bar {
-  background: #D5CDB4 /*#8e9fae;*/
+  background: #D5CDB4; /*#8e9fae;*/
   padding: 0 20px;
   display: flex;
   gap: 15px;
