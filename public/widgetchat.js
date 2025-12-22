@@ -75,6 +75,26 @@
             setTimeout(() => $input.focus(), 10);
         }
     }
+    function renderTextWithLists(text) {
+        // Escape básico (seguridad)
+        text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+        // Si detecta al menos un bullet •
+        if (text.includes("•")) {
+            // Asegura un salto de línea antes del PRIMER bullet
+            text = text.replace(/\s*•/, "<br><br>•");
+            // Asegura salto de línea antes de CADA bullet
+            text = text.replace(/\s*•\s*/g, "<br><br>• ");
+            // Limpia posibles saltos iniciales
+            text = text.replace(/^<br><br>/, "");
+        }
+
+        // Reemplaza cualquier \n restante con <br> para manejar otros saltos (como en numerados o párrafos)
+        text = text.replace(/\n/g, "<br>");
+
+        return `<p>${text}</p>`;
+    }
+
 
     function renderMessages() {
         $messages.innerHTML = "";
@@ -86,7 +106,7 @@
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
             `;
-            div.innerHTML = m.text;
+            div.innerHTML = renderTextWithLists(m.text);
             $messages.appendChild(div);
         });
 
