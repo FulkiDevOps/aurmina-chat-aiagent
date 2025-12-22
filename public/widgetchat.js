@@ -75,26 +75,6 @@
             setTimeout(() => $input.focus(), 10);
         }
     }
-    function renderTextWithLists(text) {
-        // 1. Escapar HTML
-        let rendered = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-        // 2. Convertir saltos de línea dobles en párrafos reales
-        // Esto respeta el \n\n que pediste en el System Prompt
-        rendered = rendered.split(/\n\n+/).map(para => {
-            if (para.trim().startsWith("•")) {
-                // Si el bloque es un bullet, lo tratamos como un elemento de lista
-                return `<div style="margin-bottom: 12px;">${para.trim()}</div>`;
-            }
-            return `<p style="margin-bottom: 12px;">${para.trim()}</p>`;
-        }).join("");
-
-        // 3. Si quedan saltos de línea simples, los convertimos a br
-        rendered = rendered.replace(/\n/g, "<br>");
-
-        return rendered;
-    }
-
 
     function renderMessages() {
         $messages.innerHTML = "";
@@ -106,7 +86,7 @@
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
             `;
-            div.innerHTML = renderTextWithLists(m.text);
+            div.innerHTML = m.text;
             $messages.appendChild(div);
         });
 
