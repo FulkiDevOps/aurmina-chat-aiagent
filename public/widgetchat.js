@@ -81,11 +81,17 @@
         messages.forEach(m => {
             const div = document.createElement("div");
             div.style.cssText = `
-                max-width:80%; padding:10px 14px; border-radius:15px; line-height:1.5; font-size:14px;
-                ${m.sender === "user" ?
+            max-width:80%; 
+            padding:10px 14px; 
+            border-radius:15px; 
+            line-height:1.5; 
+            font-size:14px;
+            white-space: pre-wrap; /* <--- ESTO ES LA CLAVE */
+            word-break: break-word; /* Para evitar que palabras muy largas rompan el diseño */
+            ${m.sender === "user" ?
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
-            `;
+        `;
             div.innerHTML = m.text;
             $messages.appendChild(div);
         });
