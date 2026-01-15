@@ -92,7 +92,8 @@
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}
         `;
-            div.innerHTML = m.text;
+            // div.innerHTML = m.text;
+            div.textContent = m.text;
             $messages.appendChild(div);
         });
 
