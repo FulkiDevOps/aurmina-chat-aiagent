@@ -27,7 +27,7 @@
   width: 100dvw;
   overflow: hidden;
   justify-content: center; /* Centra el chat horizontalmente */
-  background-color: #212121; /* Fondo oscuro exterior (fuera del chat) */
+  background-color: #ffffff; /* Fondo oscuro exterior (fuera del chat) */
 }
 
 /* Ocultamos la sidebar antigua */
@@ -80,7 +80,6 @@
   background-size: cover;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
 }
 
 .messages-list {
