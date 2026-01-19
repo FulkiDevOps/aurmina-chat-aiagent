@@ -23,7 +23,8 @@
 
 .telegram-layout {
   display: flex;
-  height: 100dvh;
+  height: 100vh;
+  min-height: 600px;
   width: 100dvw;
   overflow: hidden;
   justify-content: center; /* Centra el chat horizontalmente */
@@ -38,6 +39,8 @@
   width: 988px;           /* Ancho fijo solicitado */
   max-width: 100%;        /* Para que no rompa en móviles */
   display: flex;
+  height: 100%;
+  min-height: 600px;
   flex-direction: column;
   position: relative;
   background-color: white; /* Color base */
@@ -80,6 +83,7 @@
   background-size: cover;
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
 }
 
 .messages-list {
