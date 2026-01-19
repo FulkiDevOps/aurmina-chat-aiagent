@@ -86,8 +86,8 @@
             border-radius:15px; 
             line-height:1.5; 
             font-size:14px;
-            white-space: pre-wrap; /* <--- ESTO ES LA CLAVE */
-            word-break: break-word; /* Para evitar que palabras muy largas rompan el diseño */
+            white-space: pre-wrap; 
+            word-break: break-word; 
             ${m.sender === "user" ?
                 "align-self:flex-end;background:#007bff;color:white;border-radius:15px 15px 0 15px;" :
                 "align-self:flex-start;background:#e9ecef;color:#333;border-radius:15px 15px 15px 0;"}

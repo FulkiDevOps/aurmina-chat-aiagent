@@ -17,14 +17,20 @@
 .login-btn:hover { background: rgba(20, 20, 20, 0.62);}
 .login-btn:disabled { background-color: rgba(20, 20, 20, 0.29); }
 .error-text { color: red; font-size: 14px; margin-top: 10px; }
-
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden; /* Evita que el 'body' interno del chat tenga su propio scroll */
+}
 
 /* === NUEVO CHAT LAYOUT CENTRADO (988px) === */
 
 .telegram-layout {
   display: flex;
-  height: 100dvh;
-  width: 100dvw;
+  height: 100%;
+  width: 100%;
+  max-height: 100vh;
   overflow: hidden;
   justify-content: center; /* Centra el chat horizontalmente */
   background-color: #212121; /* Fondo oscuro exterior (fuera del chat) */
@@ -89,6 +95,7 @@
   flex-direction: column;
   gap: 8px;
   min-height: min-content;
+  overflow-anchor: auto;
 }
 
 .msg-row { display: flex; width: 100%; }
