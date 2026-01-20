@@ -84,7 +84,7 @@ const AurminaChat = () => {
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyPress={e => e.key === 'Enter' && handleSend()}
-                    placeholder="Escribe tu mensaje..."
+                    placeholder="Type your message..."
                     autoFocus
                 />
                 <button onClick={handleSend} disabled={sending}>➤</button>
