@@ -1,0 +1,138 @@
+/* --- OPCIÓN 3: MODERN GOLD (Copiar todo) --- */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+.app-root { position: relative; }
+
+/* BOTÓN FLOTANTE */
+.launcher-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #A68241; /* Marrón Medio */
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+.launcher-btn:hover { transform: scale(1.05); background-color: #BF9648; }
+.launcher-btn.hidden { display: none; }
+.launcher-btn img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: invert(1);
+}
+
+/* CONTENEDOR DEL WIDGET */
+.widget-container {
+    position: fixed;
+    bottom: 110px;
+    right: 20px;
+    width: 380px;
+    height: 550px;
+    z-index: 10000;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #D0CEBA;
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.chat-main.widget-mode { display: flex; flex-direction: column; height: 100%; }
+
+/* HEADER */
+.chat-header {
+    height: 60px;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-bottom: 3px solid #F2E600; /* Línea de acento gruesa */
+    color: #262001;
+}
+.chat-info h3 { font-size: 16px; margin: 0; font-weight: 700; }
+.chat-info span { font-size: 12px; opacity: 0.8; color: #A68241; }
+.close-widget-btn { background: transparent; border: none; font-size: 24px; cursor: pointer; padding: 0 5px; color: #262001; }
+
+/* MENSAJES */
+.chat-background {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #fcfcfc; /* Casi blanco */
+}
+.msg-row { display: flex; width: 100%; }
+.msg-row.user { justify-content: flex-end; }
+.msg-row.ai { justify-content: flex-start; }
+
+.msg-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+/* Burbuja Usuario (Amarillo Intenso) */
+.msg-row.user .msg-bubble {
+    background-color: #F2E600;
+    color: #262001;
+    border-bottom-right-radius: 2px;
+    font-weight: 500;
+}
+/* Burbuja IA (Marrón Oscuro) */
+.msg-row.ai .msg-bubble {
+    background-color: #262001;
+    color: white;
+    border-bottom-left-radius: 2px;
+}
+.msg-time { font-size: 10px; text-align: right; margin-top: 5px; display: block; opacity: 0.6; }
+
+/* INPUT */
+.input-bar {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: white;
+    border-top: 1px solid #eee;
+}
+.input-bar input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    border: 2px solid #D0CEBA;
+}
+.input-bar input:focus { border-color: #F2E600; }
+
+.input-bar button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #262001;
+    color: #F2E600;
+}
+.empty-state { color: #888; text-align: center; margin-top: 20px; font-size: 14px; }

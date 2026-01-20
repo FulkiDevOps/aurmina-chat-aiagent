@@ -1,145 +1,138 @@
-/* src/App.css */
+/* --- OPCIÓN 1: DARK LUXURY (Copiar todo) --- */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
 
-/* === LOGIN (Sin cambios, se mantiene igual) === */
-.login-container {
-  height: 100vh; width: 100vw; display: flex; justify-content: center; align-items: center; background-color: #333333;
-}
-.login-card {
-  background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  text-align: center; width: 350px; display: flex; flex-direction: column; align-items: center;
-}
-.brand-logo-img { width: 100px; height: auto; object-fit: contain; margin-bottom: 20px; display: block; }
-.login-title { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; margin-top: 0; }
-.login-subtitle { font-size: 14px; color: #666666; margin-bottom: 30px; }
-.login-input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; color: #ffffff; }
-.login-btn { width: 100%; padding: 12px; background: #141414; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
-.login-btn:hover { background: rgba(20, 20, 20, 0.62);}
-.login-btn:disabled { background-color: rgba(20, 20, 20, 0.29); }
-.error-text { color: red; font-size: 14px; margin-top: 10px; }
+.app-root { position: relative; }
 
-
-/* === NUEVO CHAT LAYOUT CENTRADO (988px) === */
-
-.telegram-layout {
+/* BOTÓN FLOTANTE */
+.launcher-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #BF9648; /* Dorado Ocre */
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  cursor: pointer;
+  z-index: 9999;
   display: flex;
-  height: 100vh;
-  min-height: 600px;
-  width: 100dvw;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.launcher-btn:hover { transform: scale(1.05); }
+.launcher-btn.hidden { display: none; }
+.launcher-btn img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  filter: brightness(0.2); /* Icono oscuro para contrastar con el dorado */
+}
+
+/* CONTENEDOR DEL WIDGET */
+.widget-container {
+  position: fixed;
+  bottom: 110px;
+  right: 20px;
+  width: 380px;
+  height: 550px;
+  z-index: 10000;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+  border-radius: 12px;
   overflow: hidden;
-  justify-content: center; /* Centra el chat horizontalmente */
-  background-color: #ffffff; /* Fondo oscuro exterior (fuera del chat) */
-}
-
-/* Ocultamos la sidebar antigua */
-.sidebar { display: none; }
-
-/* Contenedor Principal del Chat */
-.chat-main {
-  width: 988px;           /* Ancho fijo solicitado */
-  max-width: 100%;        /* Para que no rompa en móviles */
+  animation: slideUp 0.3s ease-out;
   display: flex;
-  height: 100%;
-  min-height: 600px;
   flex-direction: column;
-  position: relative;
-  background-color: white; /* Color base */
-  box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Sombra elegante a los lados */
+  background-color: #262001; /* Fondo oscuro */
+  border: 1px solid #3a3205;
 }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+.chat-main.widget-mode { display: flex; flex-direction: column; height: 100%; background-color: #262001; }
+
+/* HEADER */
 .chat-header {
   height: 60px;
-  background: white;
-  border-bottom: 1px solid #dfe1e5;
+  padding: 0 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  background-color: #262001;
+  border-bottom: 1px solid #BF9648; /* Línea dorada */
+  color: #BF9648; /* Texto dorado */
 }
+.chat-info h3 { font-size: 16px; margin: 0; font-weight: 700; }
+.chat-info span { font-size: 12px; opacity: 0.8; color: #D0CEBA; }
+.close-widget-btn { background: transparent; border: none; font-size: 24px; cursor: pointer; padding: 0 5px; color: #BF9648; }
 
-.chat-info h3 { font-size: 16px; margin: 0; color: #1a1a1a}
-.chat-info span { font-size: 13px; color: #999; }
-/* === BOTÓN LOGOUT (ESTILO IGUAL AL LOGIN) === */
-.logout-btn {
-  background-color: #242424; /* Mismo azul que el login */
-  color: white;              /* Texto blanco */
-  border: none;
-  border-radius: 8px;        /* Bordes redondeados igual que login */
-  padding: 10px 20px;         /* Un poco más pequeño para que quepa en el header */
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s; /* Efecto suave al pasar el mouse */
-}
-
-.logout-btn:hover {
-  background: rgba(20, 20, 20, 0.62); /* Mismo azul oscuro del hover del login */
-}
-/* Fondo del chat (mismos colores telegram) */
+/* MENSAJES */
 .chat-background {
   flex: 1;
-  background-color: #D5CDB4; /*#D5CDB4*/
-  background-image: url("https://web.telegram.org/img/bg_0.png");
-  background-size: cover;
+  padding: 15px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  background-color: #1a1601; /* Fondo muy oscuro */
 }
-
-.messages-list {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: min-content;
-  overflow-anchor: auto;
-}
-
 .msg-row { display: flex; width: 100%; }
 .msg-row.user { justify-content: flex-end; }
 .msg-row.ai { justify-content: flex-start; }
 
 .msg-bubble {
-  max-width: 75%; /* Un poco más ancho ya que tenemos más espacio */
+  max-width: 80%;
   padding: 10px 14px;
   border-radius: 12px;
-  position: relative;
-  font-size: 15px;
-  line-height: 1.5;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  font-size: 14px;
+  line-height: 1.4;
   word-wrap: break-word;
-  white-space: pre-wrap;
 }
+/* Burbuja Usuario (Dorado) */
+.msg-row.user .msg-bubble {
+  background-color: #BF9648;
+  color: #262001;
+  border-bottom-right-radius: 2px;
+}
+/* Burbuja IA (Oscura con borde) */
+.msg-row.ai .msg-bubble {
+  background-color: #262001;
+  color: #D0CEBA;
+  border: 1px solid #3a3205;
+  border-bottom-left-radius: 2px;
+}
+.msg-time { font-size: 10px; text-align: right; margin-top: 5px; display: block; opacity: 0.6; color: inherit;}
 
-/* Colores de burbuja (Intactos) */
-.msg-row.user .msg-bubble { background: #E3EDC0; color: black; border-bottom-right-radius: 2px; } /*#E3EDC0 - antes effdde*/
-.msg-row.ai .msg-bubble { background: white; color: black; border-bottom-left-radius: 2px; }
-
-.msg-time { font-size: 11px; color: #999; text-align: right; margin-top: 4px; display: block;}
-.msg-row.user .msg-time { color: #5fb39e; }
-
-/* Barra de input */
+/* INPUT */
 .input-bar {
-  background: #D5CDB4; /*#8e9fae;*/
-  padding: 15px 20px;
+  padding: 15px;
   display: flex;
-  gap: 15px;
+  gap: 10px;
   align-items: center;
+  background-color: #262001;
+  border-top: 1px solid #3a3205;
 }
 .input-bar input {
   flex: 1;
-  padding: 12px;
-  border: none;
-  font-size: 16px;
+  padding: 10px;
+  border-radius: 20px;
   outline: none;
-  border-radius: 8px;
+  font-size: 14px;
+  background-color: #1a1601;
+  border: 1px solid #BF9648;
+  color: #D0CEBA;
 }
-.input-bar button { background: #141414; font-size:24px; color: #0088cc; cursor: pointer; }
-.input-bar button:hover { background: rgba(20, 20, 20, 0.62); }
-.input-bar button:disabled { color: #ccc; }
-
-.empty-state {
-  text-align: center; margin-top: 50px;
-  background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 20px;
-  color: white; align-self: center; display: inline-block;
+.input-bar button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #BF9648;
+  color: #262001;
 }
+.empty-state { color: #BF9648; text-align: center; margin-top: 20px; font-size: 14px; }

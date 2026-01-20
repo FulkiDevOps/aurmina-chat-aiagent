@@ -1,0 +1,135 @@
+/* --- OPCIÓN 2: CLASSIC EARTH (Copiar todo) --- */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+.app-root { position: relative; }
+
+/* BOTÓN FLOTANTE */
+.launcher-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #262001; /* Marrón muy oscuro */
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+.launcher-btn:hover { transform: scale(1.05); }
+.launcher-btn.hidden { display: none; }
+.launcher-btn img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    filter: invert(1); /* Icono blanco */
+}
+
+/* CONTENEDOR DEL WIDGET */
+.widget-container {
+    position: fixed;
+    bottom: 110px;
+    right: 20px;
+    width: 380px;
+    height: 550px;
+    z-index: 10000;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    animation: slideUp 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.chat-main.widget-mode { display: flex; flex-direction: column; height: 100%; }
+
+/* HEADER */
+.chat-header {
+    height: 60px;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #A68241; /* Marrón medio */
+    color: white;
+}
+.chat-info h3 { font-size: 16px; margin: 0; font-weight: 700; }
+.chat-info span { font-size: 12px; opacity: 0.9; color: #F2E600; /* Detalle amarillo */ }
+.close-widget-btn { background: transparent; border: none; font-size: 24px; cursor: pointer; padding: 0 5px; color: white; }
+
+/* MENSAJES */
+.chat-background {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #D0CEBA; /* Fondo beige claro */
+}
+.msg-row { display: flex; width: 100%; }
+.msg-row.user { justify-content: flex-end; }
+.msg-row.ai { justify-content: flex-start; }
+
+.msg-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+/* Burbuja Usuario (Oscura con texto Crema/Amarillo) */
+.msg-row.user .msg-bubble {
+    background-color: #262001;
+    color: #F2E600;
+    border-bottom-right-radius: 2px;
+}
+/* Burbuja IA (Blanca) */
+.msg-row.ai .msg-bubble {
+    background-color: white;
+    color: #262001;
+    border-bottom-left-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.msg-time { font-size: 10px; text-align: right; margin-top: 5px; display: block; opacity: 0.6; }
+
+/* INPUT */
+.input-bar {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background-color: white;
+    border-top: 1px solid #ddd;
+}
+.input-bar input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 14px;
+    border: 1px solid #D0CEBA;
+    background-color: #f9f9f9;
+}
+.input-bar button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A68241;
+    color: white;
+}
+.empty-state { color: #555; text-align: center; margin-top: 20px; font-size: 14px; }
