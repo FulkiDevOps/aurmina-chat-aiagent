@@ -1,4 +1,4 @@
-/* --- OPCIÓN 1: DARK LUXURY (Copiar todo) --- */
+/* --- OPCIÓN 1: DARK LUXURY (FIXED BOTTOM) --- */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
 
 .app-root { position: relative; }
@@ -27,27 +27,33 @@
   width: 60%;
   height: 60%;
   object-fit: contain;
-  filter: brightness(0.2); /* Icono oscuro para contrastar con el dorado */
+  filter: brightness(0.2);
 }
 
-/* CONTENEDOR DEL WIDGET */
+/* CONTENEDOR DEL WIDGET (MODIFICADO) */
 .widget-container {
   position: fixed;
-  bottom: 110px;
-  right: 20px;
+  bottom: 0; /* CAMBIO: Pegado al piso (antes 110px) */
+  right: 20px; /* Mantiene el margen derecho igual que la burbuja */
   width: 380px;
   height: 550px;
   z-index: 10000;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-  border-radius: 12px;
+  box-shadow: 0 -5px 25px rgba(0,0,0,0.4); /* Sombra hacia arriba */
+  border-radius: 12px 12px 0 0; /* CAMBIO: Base plana, redondeado arriba */
   overflow: hidden;
   animation: slideUp 0.3s ease-out;
   display: flex;
   flex-direction: column;
-  background-color: #262001; /* Fondo oscuro */
+  background-color: #262001;
   border: 1px solid #3a3205;
+  border-bottom: none; /* Sin borde abajo porque toca el piso */
 }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Animación: Entra desde abajo del piso */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 .chat-main.widget-mode { display: flex; flex-direction: column; height: 100%; background-color: #262001; }
 
@@ -59,8 +65,8 @@
   justify-content: space-between;
   align-items: center;
   background-color: #262001;
-  border-bottom: 1px solid #BF9648; /* Línea dorada */
-  color: #BF9648; /* Texto dorado */
+  border-bottom: 1px solid #BF9648;
+  color: #BF9648;
 }
 .chat-info h3 { font-size: 16px; margin: 0; font-weight: 700; }
 .chat-info span { font-size: 12px; opacity: 0.8; color: #D0CEBA; }
@@ -74,7 +80,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #1a1601; /* Fondo muy oscuro */
+  background-color: #1a1601;
 }
 .msg-row { display: flex; width: 100%; }
 .msg-row.user { justify-content: flex-end; }
@@ -88,13 +94,12 @@
   line-height: 1.4;
   word-wrap: break-word;
 }
-/* Burbuja Usuario (Dorado) */
+/* Burbujas */
 .msg-row.user .msg-bubble {
   background-color: #BF9648;
   color: #262001;
   border-bottom-right-radius: 2px;
 }
-/* Burbuja IA (Oscura con borde) */
 .msg-row.ai .msg-bubble {
   background-color: #262001;
   color: #D0CEBA;
