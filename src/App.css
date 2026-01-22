@@ -65,7 +65,7 @@
   background-color: #D0CEBA; /* Fondo Beige Claro */
 }
 
-.msg-row { display: flex; width: 100%; }
+.msg-row { display: flex; width: 100%; margin: 20px }
 .msg-row.user { justify-content: flex-end; }
 .msg-row.ai { justify-content: flex-start; }
 
