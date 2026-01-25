@@ -7,7 +7,7 @@ const AurminaChat = () => {
     const [input, setInput] = useState('');
     const [sending, setSending] = useState(false);
     const messagesEndRef = useRef(null);
-
+    const textareaRef = useRef(null);
     // ID de sesión invitado
     const sessionId = useRef('guest-' + Math.random().toString(36).substr(2, 9));
 
@@ -15,10 +15,20 @@ const AurminaChat = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto'; // Reseteamos
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Ajustamos al contenido
+        }
+    }, [input]);
+
+
     const handleSend = async () => {
         if (!input.trim()) return;
         const text = input;
         setInput('');
+
+        if(textareaRef.current) textareaRef.current.style.height = 'auto';
 
         setMessages(prev => [...prev, {
             role: 'user',
@@ -47,13 +57,27 @@ const AurminaChat = () => {
         }
     };
 
+    // Lógica para Enter vs Ctrl+Enter
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            // Si aprieta Shift + Enter, dejamos que haga el salto de línea normal
+            if (e.shiftKey) {
+                return;
+            }
+
+            // Si es SOLO Enter, prevenimos el salto de línea y enviamos
+            e.preventDefault();
+            handleSend();
+        }
+    };
+
     return (
         <div className="chat-main">
             {/* Header */}
             <header className="chat-header">
                 <div className="chat-info">
                     <h3>Aurmina Agent</h3>
-                    <span>Online Guest Session</span>
+                    <span>Online Session</span>
                 </div>
             </header>
 
@@ -80,11 +104,13 @@ const AurminaChat = () => {
 
             {/* Input */}
             <div className="input-bar">
-                <input
+                <textarea
+                    ref={textareaRef}
                     value={input}
                     onChange={e => setInput(e.target.value)}
-                    onKeyPress={e => e.key === 'Enter' && handleSend()}
+                    onKeyDown={handleKeyDown}
                     placeholder="Type your message..."
+                    rows={1}
                     autoFocus
                 />
                 <button onClick={handleSend} disabled={sending}>➤</button>

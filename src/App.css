@@ -121,7 +121,7 @@
   padding: 25px 30px;
   display: flex;
   gap: 15px;
-  align-items: center;
+  align-items: flex-end; /* Alineamos abajo para que el botón no salte si crece el texto */
   background-color: white;
   border-top: 1px solid #ddd;
 }
@@ -142,6 +142,33 @@
   background-color: white;
 }
 
+/* CAMBIO: Estilos para textarea */
+.input-bar textarea {
+  flex: 1;
+  padding: 15px 20px;
+  border-radius: 24px; /* Un poco menos redondeado para soportar multiples lineas */
+  outline: none;
+  font-size: 15px;
+  border: 1px solid #D0CEBA;
+  background-color: #f9f9f9;
+  transition: border-color 0.2s;
+  color: #333;
+
+  /* PROPIEDADES NUEVAS PARA TEXTAREA */
+  resize: none; /* Evita que el usuario cambie el tamaño manualmente */
+  overflow-y: hidden; /* Oculta scrollbar hasta que sea necesario */
+  min-height: 52px; /* Altura inicial */
+  max-height: 150px; /* Altura máxima antes de hacer scroll */
+  font-family: inherit; /* Asegura que use la misma fuente */
+  line-height: 1.4;
+}
+
+.input-bar textarea:focus {
+  border-color: #A68241;
+  background-color: white;
+  overflow-y: auto;
+}
+
 .input-bar button {
   width: 50px;
   height: 50px;
@@ -155,7 +182,16 @@
   background-color: #A68241;
   color: white;
   transition: transform 0.1s, background-color 0.2s;
+  flex-shrink: 0; /* Evita que el botón se aplaste */
+  margin-bottom: 2px; /* Alineación visual fina con el textarea */
 }
+
+.input-bar button:hover:not(:disabled) {
+  transform: scale(1.05);
+  background-color: #8c6d36;
+}
+.typing { font-style: italic; opacity: 0.7; font-size: 13px; color: #555; }
+
 .input-bar button:hover:not(:disabled) {
   transform: scale(1.05);
   background-color: #8c6d36;
