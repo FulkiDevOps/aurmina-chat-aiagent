@@ -1,16 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import './App.css';
 
-const LOGO_URL = "https://cdn-icons-png.flaticon.com/512/724/724715.png";
-
-
-const AurminaChat = ({ onClose }) => {
+// --- COMPONENTE CHAT ---
+const AurminaChat = () => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [sending, setSending] = useState(false);
     const messagesEndRef = useRef(null);
     const textareaRef = useRef(null);
-
+    // ID de sesión invitado
     const sessionId = useRef('guest-' + Math.random().toString(36).substr(2, 9));
 
     useEffect(() => {
@@ -19,10 +17,11 @@ const AurminaChat = ({ onClose }) => {
 
     useEffect(() => {
         if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+            textareaRef.current.style.height = 'auto'; // Reseteamos
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Ajustamos al contenido
         }
     }, [input]);
+
 
     const handleSend = async () => {
         if (!input.trim()) return;
@@ -58,29 +57,31 @@ const AurminaChat = ({ onClose }) => {
         }
     };
 
-
+    // Lógica para Enter vs Ctrl+Enter
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            if (e.shiftKey) return;
+            // Si aprieta Shift + Enter, dejamos que haga el salto de línea normal
+            if (e.shiftKey) {
+                return;
+            }
+
+            // Si es SOLO Enter, prevenimos el salto de línea y enviamos
             e.preventDefault();
             handleSend();
         }
     };
 
     return (
-        <div className="chat-main widget-mode">
-
+        <div className="chat-main">
+            {/* Header */}
             <header className="chat-header">
                 <div className="chat-info">
                     <h3>Aurmina Agent</h3>
-                    <span>Online</span>
+                    <span>Online Session</span>
                 </div>
-                <button onClick={onClose} className="close-widget-btn" title="Cerrar chat">
-                    ✕
-                </button>
             </header>
 
-
+            {/* Mensajes */}
             <div className="chat-background">
                 <div className="messages-list">
                     {messages.length === 0 && (
@@ -101,7 +102,7 @@ const AurminaChat = ({ onClose }) => {
                 </div>
             </div>
 
-
+            {/* Input */}
             <div className="input-bar">
                 <textarea
                     ref={textareaRef}
@@ -118,26 +119,13 @@ const AurminaChat = ({ onClose }) => {
     );
 };
 
-
+// --- APP PRINCIPAL ---
 function App() {
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
         <div className="app-root">
-
-            <button
-                className={`launcher-btn ${isOpen ? 'hidden' : ''}`}
-                onClick={() => setIsOpen(true)}
-            >
-                <img src={LOGO_URL} alt="Chat" />
-            </button>
-
-
-            {isOpen && (
-                <div className="widget-container">
-                    <AurminaChat onClose={() => setIsOpen(false)} />
-                </div>
-            )}
+            <div className="main-chat-container">
+                <AurminaChat />
+            </div>
         </div>
     );
 }
