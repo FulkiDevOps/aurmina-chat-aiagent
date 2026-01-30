@@ -13,7 +13,7 @@
         { text: "Hi! I'm the Aurmina AI Agent. How can I help you today?", sender: "bot" }
     ];
 
-    const API_URL = "/api/chat";
+    const API_URL = "https://fulkito-aurmina-ai-agent.hf.space/api/chat";
 
     // 1. LAUNCHER (Botón flotante)
     const launcher = document.createElement("div");
