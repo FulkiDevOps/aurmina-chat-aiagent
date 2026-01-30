@@ -1,6 +1,5 @@
 (function() {
 
-    // Limpiamos cualquier rastro previo si recargas el script sin refrescar la página
     const oldLauncher = document.querySelector("#aurmina-launcher");
     if (oldLauncher) oldLauncher.remove();
     const oldChat = document.querySelector("#aurmina-chat");
