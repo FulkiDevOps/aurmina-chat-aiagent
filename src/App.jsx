@@ -57,18 +57,18 @@ const AurminaChat = () => {
         }
     };
 
-    // Lógica para Enter vs Ctrl+Enter
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            // Si aprieta Shift + Enter, dejamos que haga el salto de línea normal
+
             if (e.shiftKey) {
                 return;
             }
 
-            // Si es SOLO Enter, prevenimos el salto de línea y enviamos
             e.preventDefault();
             handleSend();
         }
+
+
     };
 
     return (
