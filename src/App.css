@@ -1,184 +1,132 @@
-/* --- OPCIÓN 2: CLASSIC EARTH (VERSIÓN CENTRADA 760px) --- */
+/* --- ESTILO WIDGET FLOTANTE --- */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
 
-/* 1. LAYOUT PRINCIPAL */
-.app-root {
+.app-root { position: relative; }
+
+/* 1. BOTÓN FLOTANTE (LA BURBUJA) */
+.launcher-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #BF9648; /* Dorado */
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  cursor: pointer;
+  z-index: 9999;
   display: flex;
-  justify-content: center; /* Centrado Horizontal */
-  align-items: flex-end;   /* Alineado al Fondo (Pegado al piso) */
-  width: 100vw;
-  height: 100vh;
-  background-color: #262001; /* Fondo oscuro de la página para contraste */
-  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+.launcher-btn:hover { transform: scale(1.05); }
+.launcher-btn.hidden { display: none; } /* Se oculta cuando el chat abre */
+.launcher-btn img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+  filter: brightness(0.2);
 }
 
-/* 2. CONTENEDOR DEL CHAT */
-.main-chat-container {
-  width: 760px;          /* ANCHO SOLICITADO */
-  height: 100vh;          /* Altura del 90% */
+/* 2. VENTANA DEL CHAT (POSICIONADA) */
+.widget-container {
+  position: fixed;
+  bottom: 20px;  /* Mismo nivel vertical que la burbuja */
+  right: 20px;   /* Mismo nivel horizontal que la burbuja */
+  width: 380px;
+  height: 550px;
+  z-index: 10000;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+  border-radius: 12px;
+  overflow: hidden;
+
+  /* Animación de apertura */
+  transform-origin: bottom right;
+  animation: popUp 0.3s ease-out;
+
   display: flex;
   flex-direction: column;
   background-color: white;
-  /* Bordes redondeados SOLO ARRIBA */
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
-  animation: slideUp 0.4s ease-out;
-  overflow: hidden; /* Para que el header respete el border-radius */
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+@keyframes popUp {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-.chat-main {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-
-/* --- ESTILOS INTERNOS (CLASSIC EARTH) --- */
+.chat-main.widget-mode { display: flex; flex-direction: column; height: 100%; }
 
 /* HEADER */
 .chat-header {
-  height: 70px;
-  padding: 0 30px;
+  height: 60px;
+  padding: 0 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #A68241; /* Marrón medio */
+  background-color: #A68241;
   color: white;
-  /* Sin border-radius aquí porque el contenedor ya recorta */
 }
-.chat-info h3 { font-size: 18px; margin: 0; font-weight: 700; }
-.chat-info span { font-size: 13px; opacity: 0.9; color: #F2E600; /* Acento amarillo */ display: block; margin-top: 4px;}
+.chat-info h3 { font-size: 16px; margin: 0; font-weight: 700; }
+.chat-info span { font-size: 12px; opacity: 0.9; color: #F2E600; }
+.close-widget-btn { background: transparent; border: none; font-size: 24px; cursor: pointer; padding: 0 5px; color: white; }
 
-/* ÁREA DE MENSAJES */
+/* MENSAJES */
 .chat-background {
   flex: 1;
-  padding: 30px;
+  padding: 15px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  background-color: #D0CEBA; /* Fondo Beige Claro */
+  gap: 10px;
+  background-color: #D0CEBA;
 }
-
-.msg-row { display: flex; width: 100%; margin: 20px }
+.msg-row { display: flex; width: 100%; }
 .msg-row.user { justify-content: flex-end; }
 .msg-row.ai { justify-content: flex-start; }
 
 .msg-bubble {
-  max-width: 75%;
-  padding: 14px 20px;
-  border-radius: 16px;
-  font-size: 15px;
-  line-height: 1.5;
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
   word-wrap: break-word;
   white-space: pre-wrap;
 }
+.msg-row.user .msg-bubble { background-color: #262001; color: #F2E600; border-bottom-right-radius: 2px; }
+.msg-row.ai .msg-bubble { background-color: white; color: #262001; border-bottom-left-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+.msg-time { font-size: 10px; text-align: right; margin-top: 5px; display: block; opacity: 0.6; }
 
-/* Burbuja Usuario (Oscura con texto Crema/Amarillo) */
-.msg-row.user .msg-bubble {
-  background-color: #262001;
-  color: #F2E600;
-  border-bottom-right-radius: 2px;
-  font-weight: 500;
-}
-
-/* Burbuja IA (Blanca) */
-.msg-row.ai .msg-bubble {
-  background-color: white;
-  color: #262001;
-  border-bottom-left-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.msg-time { font-size: 11px; text-align: right; margin-top: 6px; display: block; opacity: 0.6; }
-/* Ajuste de color de la hora según el fondo */
-.msg-row.user .msg-time { color: #D0CEBA; }
-.msg-row.ai .msg-time { color: #666; }
-
-/* EMPTY STATE */
-.empty-state {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-.empty-state span {
-  background: rgba(255, 255, 255, 0.6);
-  color: #262001;
-  padding: 15px 30px;
-  border-radius: 30px;
-  font-size: 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-/* INPUT BAR */
-/* INPUT BAR */
+/* INPUT */
 .input-bar {
-  padding: 25px 30px;
+  padding: 15px;
   display: flex;
-  gap: 15px;
+  gap: 10px;
   align-items: flex-end;
   background-color: white;
   border-top: 1px solid #ddd;
 }
-
 .input-bar textarea {
-  flex: 1;
-  padding: 15px 20px;
-  border-radius: 24px;
-  outline: none;
-  font-size: 15px;
-  border: 1px solid #D0CEBA;
-  background-color: #f9f9f9;
-  transition: border-color 0.2s;
-  color: #333;
-
-  /* PROPIEDADES DE TAMAÑO */
-  resize: none;         /* Quita la esquina para redimensionar */
-  min-height: 52px;     /* Altura inicial */
-  max-height: 150px;    /* Altura máxima antes de scrollear */
-  font-family: inherit;
-  line-height: 1.4;
-
-  /* TRUCO PARA OCULTAR SCROLLBAR (Pero permitir scroll) */
-  scrollbar-width: none;  /* Firefox */
-  -ms-overflow-style: none;  /* IE y Edge */
-  overflow-y: auto; /* Permite scroll si el texto es muy largo */
+  flex: 1; padding: 10px; border-radius: 20px; outline: none; font-size: 14px;
+  border: 1px solid #D0CEBA; background-color: #f9f9f9;
+  resize: none; min-height: 42px; max-height: 120px;
+  font-family: inherit; line-height: 1.4; scrollbar-width: none; overflow-y: auto;
 }
-
-/* Ocultar scrollbar en Chrome, Safari y Opera */
-.input-bar textarea::-webkit-scrollbar {
-  display: none;
-}
-
-.input-bar textarea:focus {
-  border-color: #A68241;
-  background-color: white;
-}
+.input-bar textarea::-webkit-scrollbar { display: none; }
+.input-bar textarea:focus { border-color: #A68241; background-color: white; }
 
 .input-bar button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #A68241;
-  color: white;
-  transition: transform 0.1s, background-color 0.2s;
-  flex-shrink: 0;
-  margin-bottom: 2px;
+  width: 40px; height: 40px; border-radius: 50%; border: none;
+  cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;
+  background-color: #A68241; color: white; flex-shrink: 0; margin-bottom: 2px;
 }
+.input-bar button:hover { background-color: #97763a; }
+.input-bar button:disabled { background-color: #ccc; cursor: default; }
 
-.input-bar button:hover:not(:disabled) {
-  transform: scale(1.05);
-  background-color: #8c6d36;
+.empty-state { text-align: center; margin-top: 40px; width: 100%; }
+.empty-state span {
+  background-color: rgba(255, 255, 255, 0.6); padding: 10px 20px;
+  border-radius: 20px; font-size: 13px; color: #444; display: inline-block;
 }
